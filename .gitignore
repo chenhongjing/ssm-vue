@@ -1,0 +1,43 @@
+.DS_Store
+vue-ui/node_modules
+/dist
+
+
+# local env files
+.env.local
+.env.*.local
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/
+
+
+mvnw
+mvnw.cmd
+.mvn/
+
+*.log
+
