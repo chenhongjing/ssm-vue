@@ -1,29 +1,64 @@
-// 导入用来创建路由和确定路由模式的两个方法
-import {
-    createRouter,
-    createWebHistory
-} from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import layout from '@/layout/index'
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: layout,
+    redirect: '/users',
+    children: [
+      {
+        path: 'users',
+        name: 'users',
+        component: () => import('@/views/users/index.vue')
+      },
+      {
+        path: 'categories',
+        name: 'categories',
+        component: () => import('@/views/categories/index.vue')
+      },
+      {
+        path: 'goods',
+        name: 'goods',
+        component: () => import('@/views/goods/index.vue')
+      },
+      {
+        path: 'orders',
+        name: 'orders',
+        component: () => import('@/views/orders/index.vue')
+      },
+      {
+        path: 'params',
+        name: 'params',
+        component: () => import('@/views/params/index.vue')
+      },
+      {
+        path: 'reports',
+        name: 'reports',
+        component: () => import('@/views/reports/index.vue')
+      },
+      {
+        path: 'rights',
+        name: 'rights',
+        component: () => import('@/views/rights/index.vue')
+      },
+      {
+        path: 'roles',
+        name: 'roles',
+        component: () => import('@/views/roles/index.vue')
+      }
+    ]
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login/index.vue')
+  }
+]
 
-/**
- * 定义路由信息
- * 
- */
-const routes = []
-
-// 创建路由实例并传递 `routes` 配置
-// 我们在这里使用 html5 的路由模式，url中不带有#，部署项目的时候需要注意。
 const router = createRouter({
-    history: createWebHistory(),
-    routes, 
+  history: createWebHashHistory(),
+  routes
 })
 
-
-// 全局的路由守卫：每次发生路由的时候，路由守卫都会工作
-router.beforeEach((to, from) => {
-    console.log(to)
-    console.log(from)
-    return true
-})
-
-// 路由实例导出
 export default router

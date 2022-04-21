@@ -1,16 +1,10 @@
 import { createStore } from 'vuex'
-import user from '@/store/modules/user'
-import actions from '@/store/actions'
-import mutations from '@/store/mutations'
+import app from './modules/app'
+import getters from './getters'
 
-
-const store = createStore({
-    modules: {
-        user
-    },
-    // actions 和 mutations 暂时为空
-    actions,
-    mutations
+export default createStore({
+  modules: {
+    app
+  },
+  getters
 })
-
-export default store
