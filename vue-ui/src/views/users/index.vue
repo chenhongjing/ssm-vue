@@ -9,7 +9,9 @@
         ></el-input>
       </el-col>
       <el-button type="primary" :icon="Search">搜索</el-button>
-      <el-button type="primary" :icon="Plus">添加数据</el-button>
+      <el-button type="primary" :icon="Plus" @click="handleDialogValue"
+        >添加数据</el-button
+      >
     </el-row>
 
     <el-table :data="tableData" style="width: 100%">
@@ -27,12 +29,25 @@
       </el-table-column>
     </el-table>
   </el-card>
+
+  <!-- 加上v-if保证每次点开表单后都是全新的，没有之前的残留数据 -->
+  <Dialog
+    v-model:model-value="dialogVisible"
+    :title="dialogTitle"
+    v-if="dialogVisible"
+  />
+  <!-- Dialog还有一个事件要绑定： @initUserList="initGetUserList" -->
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { Search, Plus, Edit, Delete } from '@element-plus/icons-vue'
 import { options } from './options'
+import Dialog from './components/dialog.vue'
+
+const dialogVisible = ref(false)
+const dialogTitle = ref('')
+
 const queryForm = ref({
   query: '',
   pagenum: 1,
@@ -56,6 +71,11 @@ const tableData = ref([
     address: 'No. 189, Grove St, Los Angeles'
   }
 ])
+
+const handleDialogValue = () => {
+  dialogTitle.value = '添加数据'
+  dialogVisible.value = true
+}
 </script>
 
 <style lang="scss" scoped>
