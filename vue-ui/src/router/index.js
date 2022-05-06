@@ -3,49 +3,44 @@ import layout from '@/layout/index'
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: '主页',
     component: layout,
-    redirect: '/users',
+    redirect: '/dynamic_param',
     children: [
       {
-        path: 'users',
-        name: 'users',
+        path: 'organ',
+        name: '人体',
+        component: () => import('@/views/organs/index.vue')
+      },
+      {
+        path: 'animal',
+        name: '动物介绍',
+        component: () => import('@/views/animals/index.vue')
+      },
+      {
+        path: 'substitute',
+        name: '动物材料',
+        component: () => import('@/views/substitutes/index.vue')
+      },
+      {
+        path: 'user_management',
+        name: '管理',
         component: () => import('@/views/users/index.vue')
       },
       {
-        path: 'categories',
-        name: 'categories',
-        component: () => import('@/views/categories/index.vue')
+        path: 'dynamic_param',
+        name: '动态力学参数',
+        component: () => import('@/views/dynamic_params/index.vue')
       },
       {
-        path: 'goods',
-        name: 'goods',
-        component: () => import('@/views/goods/index.vue')
+        path: 'other_param',
+        name: '其他参数',
+        component: () => import('@/views/other_params/index.vue')
       },
       {
-        path: 'orders',
-        name: 'orders',
-        component: () => import('@/views/orders/index.vue')
-      },
-      {
-        path: 'params',
-        name: 'params',
-        component: () => import('@/views/params/index.vue')
-      },
-      {
-        path: 'reports',
-        name: 'reports',
-        component: () => import('@/views/reports/index.vue')
-      },
-      {
-        path: 'rights',
-        name: 'rights',
-        component: () => import('@/views/rights/index.vue')
-      },
-      {
-        path: 'roles',
-        name: 'roles',
-        component: () => import('@/views/roles/index.vue')
+        path: 'log',
+        name: '日志',
+        component: () => import('@/views/logs/index.vue')
       }
     ]
   },

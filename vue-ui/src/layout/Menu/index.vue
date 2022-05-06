@@ -10,20 +10,20 @@
     :collapse="!$store.getters.siderType"
   >
     <el-sub-menu
-      :index="item.id + ''"
+      :index="item.current.menuId + ''"
       v-for="(item, index) in menusList"
-      :key="item.id"
+      :key="item.current.menuId"
     >
       <template #title>
         <el-icon>
           <component :is="iconList[index]"></component>
         </el-icon>
-        <span>{{ item.authName }}</span>
+        <span>{{ item.current.menuName }}</span>
       </template>
       <el-menu-item
         :index="'/' + it.path"
         v-for="it in item.children"
-        :key="it.id"
+        :key="it.menuId"
         @click="savePath(it.path)"
       >
         <template #title>
@@ -31,7 +31,7 @@
             <component :is="icon"></component>
           </el-icon>
           <!-- <span>{{ $t(`menus.${it.path}`) }}</span> -->
-          <span>{{ it.authName }}</span>
+          <span>{{ it.menuName }}</span>
         </template>
       </el-menu-item>
     </el-sub-menu>
@@ -43,10 +43,10 @@ import { menuList } from '@/api/menu'
 import { ref } from 'vue'
 import variables from '@/styles/variables.scss'
 
-const iconList = ref(['user', 'setting', 'shop', 'tickets', 'pie-chart'])
+const iconList = ref(['user', 'watermelon', 'pear', 'tickets', 'pie-chart'])
 const icon = ref('menu')
 
-const defaultActive = ref(sessionStorage.getItem('path') || '/users')
+const defaultActive = ref(sessionStorage.getItem('path') || '/dynamic_param')
 const menusList = ref([])
 const initMenusList = async () => {
   menusList.value = await menuList()

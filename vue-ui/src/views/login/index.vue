@@ -7,9 +7,9 @@
         <el-input v-model="form.username" placeholder="请输入用户名">
         </el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="password">
+      <el-form-item label="密码" prop="userPassword">
         <el-input
-          v-model="form.password"
+          v-model="form.userPassword"
           type="password"
           placeholder="请输入密码"
           show-password
@@ -33,12 +33,12 @@ const store = useStore()
 
 const form = ref({
   username: 'admin',
-  password: '123456'
+  userPassword: '123456'
 })
 
 const rules = reactive({
   username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
-  password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
+  userPassword: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
 })
 
 // 登录时统一检验
