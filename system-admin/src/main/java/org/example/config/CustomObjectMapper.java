@@ -6,13 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.text.SimpleDateFormat;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
- * 自定义序列化器配置
+ * @Description:
+ * @author: cangxiamy
+ * @date: 2022.04.30
  */
 public class CustomObjectMapper extends ObjectMapper {
-
     public CustomObjectMapper() {
         super();
         //去掉默认的时间戳格式
@@ -22,7 +24,8 @@ public class CustomObjectMapper extends ObjectMapper {
         //设置日期转换yyyy-MM-dd HH:mm:ss
         setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         // 设置输入:禁止把POJO中值为null的字段映射到json字符串中
-        configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+//        configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false); // deprecate
+        configOverride(Map.class).setInclude(JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL));
         // 空值不序列化
         setSerializationInclusion(JsonInclude.Include.NON_NULL);
         // 反序列化时，属性不存在的兼容处理
