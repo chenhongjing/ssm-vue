@@ -15,9 +15,7 @@
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 
-const squareUrl = ref(
-  'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'
-)
+const squareUrl = ref('/avatar2.gif')
 const store = useStore()
 
 const logout = () => {

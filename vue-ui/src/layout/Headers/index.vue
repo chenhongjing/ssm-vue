@@ -2,7 +2,10 @@
   <div class="navbar">
     <Hamburger />
     <Breadcrumb />
-    <div class="navbar-right"><Avatar /></div>
+    <div class="navbar-right">
+      <Fullscreen class="navbar-item" />
+      <Avatar class="navbar-item" />
+    </div>
   </div>
 </template>
 
@@ -10,6 +13,7 @@
 import Hamburger from './components/hamburger.vue'
 import Breadcrumb from './components/breadcrumb.vue'
 import Avatar from './components/avatar.vue'
+import Fullscreen from './components/fullscreen.vue'
 </script>
 
 <style lang="scss" scoped>

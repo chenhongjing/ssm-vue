@@ -5,11 +5,11 @@
     <id column="organ_id" jdbcType="INTEGER" property="organId" />
     <result column="organ_name" jdbcType="VARCHAR" property="organName" />
     <result column="info" jdbcType="VARCHAR" property="info" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.example.entity.OrganWithBLOBs">
-    <result column="picture" jdbcType="LONGVARBINARY" property="picture" />
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.example.entity.Organ">
     <result column="param_data" jdbcType="LONGVARCHAR" property="paramData" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -71,10 +71,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    organ_id, organ_name, info, user_id, updated_time
+    organ_id, organ_name, info, picture_url, user_name, updated_time
   </sql>
   <sql id="Blob_Column_List">
-    picture, param_data
+    param_data
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="org.example.entity.OrganExample" resultMap="ResultMapWithBLOBs">
     select
@@ -124,15 +124,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="org.example.entity.OrganWithBLOBs">
+  <insert id="insert" parameterType="org.example.entity.Organ">
     insert into organ (organ_id, organ_name, info, 
-      user_id, updated_time, picture, 
+      picture_url, user_name, updated_time, 
       param_data)
     values (#{organId,jdbcType=INTEGER}, #{organName,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, 
-      #{userId,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP}, #{picture,jdbcType=LONGVARBINARY}, 
+      #{pictureUrl,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}, 
       #{paramData,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="org.example.entity.OrganWithBLOBs">
+  <insert id="insertSelective" parameterType="org.example.entity.Organ">
     insert into organ
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="organId != null">
@@ -144,14 +144,14 @@
       <if test="info != null">
         info,
       </if>
-      <if test="userId != null">
-        user_id,
+      <if test="pictureUrl != null">
+        picture_url,
+      </if>
+      <if test="userName != null">
+        user_name,
       </if>
       <if test="updatedTime != null">
         updated_time,
-      </if>
-      <if test="picture != null">
-        picture,
       </if>
       <if test="paramData != null">
         param_data,
@@ -167,14 +167,14 @@
       <if test="info != null">
         #{info,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+      <if test="pictureUrl != null">
+        #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
       </if>
       <if test="updatedTime != null">
         #{updatedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="picture != null">
-        #{picture,jdbcType=LONGVARBINARY},
       </if>
       <if test="paramData != null">
         #{paramData,jdbcType=LONGVARCHAR},
@@ -199,14 +199,14 @@
       <if test="row.info != null">
         info = #{row.info,jdbcType=VARCHAR},
       </if>
-      <if test="row.userId != null">
-        user_id = #{row.userId,jdbcType=INTEGER},
+      <if test="row.pictureUrl != null">
+        picture_url = #{row.pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="row.userName != null">
+        user_name = #{row.userName,jdbcType=VARCHAR},
       </if>
       <if test="row.updatedTime != null">
         updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="row.picture != null">
-        picture = #{row.picture,jdbcType=LONGVARBINARY},
       </if>
       <if test="row.paramData != null">
         param_data = #{row.paramData,jdbcType=LONGVARCHAR},
@@ -221,9 +221,9 @@
     set organ_id = #{row.organId,jdbcType=INTEGER},
       organ_name = #{row.organName,jdbcType=VARCHAR},
       info = #{row.info,jdbcType=VARCHAR},
-      user_id = #{row.userId,jdbcType=INTEGER},
+      picture_url = #{row.pictureUrl,jdbcType=VARCHAR},
+      user_name = #{row.userName,jdbcType=VARCHAR},
       updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
-      picture = #{row.picture,jdbcType=LONGVARBINARY},
       param_data = #{row.paramData,jdbcType=LONGVARCHAR}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -234,13 +234,14 @@
     set organ_id = #{row.organId,jdbcType=INTEGER},
       organ_name = #{row.organName,jdbcType=VARCHAR},
       info = #{row.info,jdbcType=VARCHAR},
-      user_id = #{row.userId,jdbcType=INTEGER},
+      picture_url = #{row.pictureUrl,jdbcType=VARCHAR},
+      user_name = #{row.userName,jdbcType=VARCHAR},
       updated_time = #{row.updatedTime,jdbcType=TIMESTAMP}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="org.example.entity.OrganWithBLOBs">
+  <update id="updateByPrimaryKeySelective" parameterType="org.example.entity.Organ">
     update organ
     <set>
       <if test="organName != null">
@@ -249,14 +250,14 @@
       <if test="info != null">
         info = #{info,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
+      <if test="pictureUrl != null">
+        picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
       </if>
       <if test="updatedTime != null">
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="picture != null">
-        picture = #{picture,jdbcType=LONGVARBINARY},
       </if>
       <if test="paramData != null">
         param_data = #{paramData,jdbcType=LONGVARCHAR},
@@ -264,13 +265,13 @@
     </set>
     where organ_id = #{organId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.example.entity.OrganWithBLOBs">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.example.entity.Organ">
     update organ
     set organ_name = #{organName,jdbcType=VARCHAR},
       info = #{info,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=INTEGER},
+      picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},
-      picture = #{picture,jdbcType=LONGVARBINARY},
       param_data = #{paramData,jdbcType=LONGVARCHAR}
     where organ_id = #{organId,jdbcType=INTEGER}
   </update>
@@ -278,7 +279,8 @@
     update organ
     set organ_name = #{organName,jdbcType=VARCHAR},
       info = #{info,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=INTEGER},
+      picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
     where organ_id = #{organId,jdbcType=INTEGER}
   </update>

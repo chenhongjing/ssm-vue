@@ -27,12 +27,17 @@ public class DynamicParameterController {
     @PostMapping("dynamic_param")
     public ResponseEntity<Boolean> addDynamicParamRecord(@RequestBody DynamicParameter dynamicParam){
         if(dynamicParam != null){
-            dynamicParamService.addDynamicParamRecord(dynamicParam);
-            log.info("insert dynamic params succeed!");
-            return ResponseEntity.ok().build();
+            if(dynamicParamService.addDynamicParamRecord(dynamicParam)){
+                log.info("insert dynamic params succeed!");
+                return ResponseEntity.ok().build();
+            }
+            else{
+                log.info("fail to insert dynamic params.");
+                return ResponseEntity.status(500).build();
+            }
         }
         else{
-            log.info("error: dynamic params is null");
+            log.info("[error] dynamic params is null");
             return ResponseEntity.status(500).build();
         }
     }
@@ -58,11 +63,11 @@ public class DynamicParameterController {
     public ResponseEntity<Boolean> editDynamicParamRecord(@PathVariable Integer id, @RequestBody DynamicParameter dynamicParam){
         if(dynamicParam != null) {
             if (dynamicParamService.editDynamicParamRecord(id, dynamicParam)) {
-                log.info("insert dynamic params succeed!");
+                log.info("update dynamic params succeed!");
                 return ResponseEntity.ok().build();
             }
         }
-        log.info("error: dynamic params is null");
+        log.info("[error] dynamic params is null");
         return ResponseEntity.status(500).build();
     }
 }

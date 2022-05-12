@@ -12,5 +12,4 @@ const app = createApp(App)
 for (const iconName in ElIcons) {
   app.component(iconName, ElIcons[iconName])
 }
-
 app.use(store).use(router).use(VueUeditorWrap).mount('#app')

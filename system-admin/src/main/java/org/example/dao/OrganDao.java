@@ -4,7 +4,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.example.entity.Organ;
 import org.example.entity.OrganExample;
-import org.example.entity.OrganWithBLOBs;
 
 public interface OrganDao {
     long countByExample(OrganExample example);
@@ -13,25 +12,25 @@ public interface OrganDao {
 
     int deleteByPrimaryKey(Integer organId);
 
-    int insert(OrganWithBLOBs row);
+    int insert(Organ row);
 
-    int insertSelective(OrganWithBLOBs row);
+    int insertSelective(Organ row);
 
-    List<OrganWithBLOBs> selectByExampleWithBLOBs(OrganExample example);
+    List<Organ> selectByExampleWithBLOBs(OrganExample example);
 
     List<Organ> selectByExample(OrganExample example);
 
-    OrganWithBLOBs selectByPrimaryKey(Integer organId);
+    Organ selectByPrimaryKey(Integer organId);
 
-    int updateByExampleSelective(@Param("row") OrganWithBLOBs row, @Param("example") OrganExample example);
+    int updateByExampleSelective(@Param("row") Organ row, @Param("example") OrganExample example);
 
-    int updateByExampleWithBLOBs(@Param("row") OrganWithBLOBs row, @Param("example") OrganExample example);
+    int updateByExampleWithBLOBs(@Param("row") Organ row, @Param("example") OrganExample example);
 
     int updateByExample(@Param("row") Organ row, @Param("example") OrganExample example);
 
-    int updateByPrimaryKeySelective(OrganWithBLOBs row);
+    int updateByPrimaryKeySelective(Organ row);
 
-    int updateByPrimaryKeyWithBLOBs(OrganWithBLOBs row);
+    int updateByPrimaryKeyWithBLOBs(Organ row);
 
     int updateByPrimaryKey(Organ row);
 }

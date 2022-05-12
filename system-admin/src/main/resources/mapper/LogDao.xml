@@ -6,7 +6,7 @@
     <result column="api_method" jdbcType="VARCHAR" property="apiMethod" />
     <result column="request_url" jdbcType="VARCHAR" property="requestUrl" />
     <result column="request_method" jdbcType="VARCHAR" property="requestMethod" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="oper_ip" jdbcType="VARCHAR" property="operIp" />
     <result column="oper_status" jdbcType="INTEGER" property="operStatus" />
     <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
@@ -71,8 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    log_id, api_method, request_url, request_method, user_id, oper_ip, oper_status, error_msg, 
-    oper_time
+    log_id, api_method, request_url, request_method, user_name, oper_ip, oper_status, 
+    error_msg, oper_time
   </sql>
   <select id="selectByExample" parameterType="org.example.entity.LogExample" resultMap="BaseResultMap">
     select
@@ -106,11 +106,11 @@
   </delete>
   <insert id="insert" parameterType="org.example.entity.Log">
     insert into log (log_id, api_method, request_url, 
-      request_method, user_id, oper_ip, 
+      request_method, user_name, oper_ip, 
       oper_status, error_msg, oper_time
       )
     values (#{logId,jdbcType=INTEGER}, #{apiMethod,jdbcType=VARCHAR}, #{requestUrl,jdbcType=VARCHAR}, 
-      #{requestMethod,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{operIp,jdbcType=VARCHAR}, 
+      #{requestMethod,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{operIp,jdbcType=VARCHAR}, 
       #{operStatus,jdbcType=INTEGER}, #{errorMsg,jdbcType=VARCHAR}, #{operTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -129,8 +129,8 @@
       <if test="requestMethod != null">
         request_method,
       </if>
-      <if test="userId != null">
-        user_id,
+      <if test="userName != null">
+        user_name,
       </if>
       <if test="operIp != null">
         oper_ip,
@@ -158,8 +158,8 @@
       <if test="requestMethod != null">
         #{requestMethod,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
       </if>
       <if test="operIp != null">
         #{operIp,jdbcType=VARCHAR},
@@ -196,8 +196,8 @@
       <if test="row.requestMethod != null">
         request_method = #{row.requestMethod,jdbcType=VARCHAR},
       </if>
-      <if test="row.userId != null">
-        user_id = #{row.userId,jdbcType=INTEGER},
+      <if test="row.userName != null">
+        user_name = #{row.userName,jdbcType=VARCHAR},
       </if>
       <if test="row.operIp != null">
         oper_ip = #{row.operIp,jdbcType=VARCHAR},
@@ -222,7 +222,7 @@
       api_method = #{row.apiMethod,jdbcType=VARCHAR},
       request_url = #{row.requestUrl,jdbcType=VARCHAR},
       request_method = #{row.requestMethod,jdbcType=VARCHAR},
-      user_id = #{row.userId,jdbcType=INTEGER},
+      user_name = #{row.userName,jdbcType=VARCHAR},
       oper_ip = #{row.operIp,jdbcType=VARCHAR},
       oper_status = #{row.operStatus,jdbcType=INTEGER},
       error_msg = #{row.errorMsg,jdbcType=VARCHAR},
@@ -243,8 +243,8 @@
       <if test="requestMethod != null">
         request_method = #{requestMethod,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
       </if>
       <if test="operIp != null">
         oper_ip = #{operIp,jdbcType=VARCHAR},
@@ -266,7 +266,7 @@
     set api_method = #{apiMethod,jdbcType=VARCHAR},
       request_url = #{requestUrl,jdbcType=VARCHAR},
       request_method = #{requestMethod,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
       oper_ip = #{operIp,jdbcType=VARCHAR},
       oper_status = #{operStatus,jdbcType=INTEGER},
       error_msg = #{errorMsg,jdbcType=VARCHAR},

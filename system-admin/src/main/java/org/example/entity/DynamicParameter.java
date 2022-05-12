@@ -8,11 +8,9 @@ import java.util.Date;
 public class DynamicParameter {
     private Integer paramId;
 
-    private Integer materialId;
-
     private String materialName;
 
-    private Integer userId;
+    private String userName;
 
     private String info;
 
@@ -34,14 +32,6 @@ public class DynamicParameter {
         this.paramId = paramId;
     }
 
-    public Integer getMaterialId() {
-        return materialId;
-    }
-
-    public void setMaterialId(Integer materialId) {
-        this.materialId = materialId;
-    }
-
     public String getMaterialName() {
         return materialName;
     }
@@ -50,12 +40,12 @@ public class DynamicParameter {
         this.materialName = materialName == null ? null : materialName.trim();
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
     }
 
     public String getInfo() {

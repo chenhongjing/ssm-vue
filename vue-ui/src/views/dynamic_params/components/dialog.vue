@@ -14,7 +14,7 @@
     >
       <!--材料名称：material_id -> material_name -->
 
-      <el-form-item label="材料名称" prop="materialName">
+      <el-form-item label="组织/器官名" prop="materialName">
         <el-col :span="halfSpan">
           <el-input v-model="form.materialName"
         /></el-col>
@@ -106,28 +106,32 @@ const handleClose = () => {
 }
 
 const handleConfirm = () => {
-  // 统一表单验证
-  formRef.value.validate(async (valid) => {
-    if (valid) {
-      // 发送请求：添加/修改
-      if (props.dialogTitle.includes('添加')) {
-        await addDynamicParamRecord(form.value)
-      } else {
-        await editDynamicParamRecord(form.value)
-      }
+  if (props.dialogTitle.includes('预览')) {
+    handleClose()
+  } else {
+    // 统一表单验证
+    formRef.value.validate(async (valid) => {
+      if (valid) {
+        // 发送请求：添加/修改
+        if (props.dialogTitle.includes('添加')) {
+          await addDynamicParamRecord(form.value)
+        } else {
+          await editDynamicParamRecord(form.value)
+        }
 
-      ElMessage({
-        message: props.dialogTitle.includes('添加') ? '添加成功' : '修改成功',
-        type: 'success'
-      })
-      // 提交完数据后要刷新表单
-      emits('initDynamicParamRecords')
-      handleClose()
-    } else {
-      console.log('error')
-      return false
-    }
-  })
+        ElMessage({
+          message: props.dialogTitle.includes('添加') ? '添加成功' : '修改成功',
+          type: 'success'
+        })
+        // 提交完数据后要刷新表单
+        emits('initDynamicParamRecords')
+        handleClose()
+      } else {
+        console.log('error')
+        return false
+      }
+    })
+  }
 }
 
 const editorConfig = ref({

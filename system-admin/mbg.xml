@@ -51,6 +51,7 @@
         <table tableName="other_param" domainObjectName="OtherParameter" mapperName="OtherParameterDao"/>
         <table tableName="substitute" domainObjectName="Substitute" mapperName="SubstituteDao"/>
         <table tableName="system_user" domainObjectName="User" mapperName="UserDao"/>
+        <table tableName="system_file" domainObjectName="SystemFile" mapperName="SystemFileDao"/>
 
     </context>
 </generatorConfiguration>

@@ -7,12 +7,15 @@ import org.example.dao.SubstituteDao;
 import org.example.dao.UserDao;
 import org.example.entity.*;
 import org.example.service.DynamicParamService;
+import org.example.utils.RequestUtil;
+import org.example.utils.TimeUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -36,49 +39,79 @@ public class DynamicParamServiceImpl implements DynamicParamService {
     private SubstituteDao substituteDao;
 
     @Override
-    public void addDynamicParamRecord(DynamicParameter dynamicParam) {
-        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+    public Boolean addDynamicParamRecord(DynamicParameter dynamicParam) {
+        String username = RequestUtil.getUsername();
 
-        String username = request.getHeader(Constants.HEAD_USERNAME);
+//        UserExample userEx = new UserExample();
+//        userEx.createCriteria().andUsernameEqualTo(username);
+//        List<User> user = userDao.selectByExample(userEx);
 
-        UserExample userEx = new UserExample();
-        userEx.createCriteria().andUsernameEqualTo(username);
-        List<User> user = userDao.selectByExample(userEx);
+//        SubstituteExample substituteEx = new SubstituteExample();
+//        substituteEx.createCriteria().andMaterialNameEqualTo(dynamicParam.getMaterialName());
+//        List<Substitute> substitute = substituteDao.selectByExample(substituteEx);
+//
+//        if(substitute.size() == 1){
+//            dynamicParam.setUserName(username);
+//            dynamicParam.setMaterialName(substitute.get(0).getMaterialId());
+//            // 增加时间戳
+//            Date javaDate = new Date();
+//            java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
+//            dynamicParam.setUpdatedTime(sqlDate);
+//            dynamicParamDao.insert(dynamicParam);
+//        }
+//        else{
+//            log.info("error to save dynamic params: cannot find valid material");
+//            return false;
+//        }
 
+        // 增加时间戳
+        Timestamp timeStamp = TimeUtil.getTimeStamp();
+
+        // 如果动物组织器官在数据库中找不到，自动增加
         SubstituteExample substituteEx = new SubstituteExample();
-        substituteEx.createCriteria().andMaterialNameEqualTo(dynamicParam.getMaterialName());
-        List<Substitute> substitute = substituteDao.selectByExample(substituteEx);
+        substituteEx.createCriteria().andMaterialNameEqualTo(dynamicParam.getMaterialName()).andUserNameEqualTo(username);
+        List<Substitute> substitutes = substituteDao.selectByExample(substituteEx);
+        if(substitutes.isEmpty()){
+            Substitute substitute = new Substitute();
+            substitute.setUserName(username);
+            substitute.setMaterialName(dynamicParam.getMaterialName());
+            substitute.setUpdatedTime(timeStamp);
+            substituteDao.insertSelective(substitute);
+        }
 
-        if(user.size() == 1 && substitute.size() == 1){
-            dynamicParam.setUserId(user.get(0).getUserId());
-            dynamicParam.setMaterialId(substitute.get(0).getMaterialId());
-            // 增加时间戳
-            Date javaDate = new Date();
-            java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
-            dynamicParam.setUpdatedTime(sqlDate);
-            dynamicParamDao.insert(dynamicParam);
-        }
-        else{
-            log.info("error to save dynamic params: cannot find valid user/material");
-        }
+        dynamicParam.setUserName(username);
+
+        dynamicParam.setUpdatedTime(timeStamp);
+        dynamicParamDao.insertSelective(dynamicParam);
+        return true;
     }
 
     @Override
     public List<DynamicParameter> getAllRecords(String query) {
+        String username = RequestUtil.getUsername();
+//        List<User> user = getUser(username);
+//        if(user.isEmpty()){
+//            log.info("[error]cannot find user!");
+//            return null;
+//        }
+//        else if(user.size() > 1){
+//            log.info("[error]duplicate user");
+//        }
+
         List<DynamicParameter> records = null;
+        DynamicParameterExample dynamicParamEx = new DynamicParameterExample();
         if(query!= null && !query.isEmpty()){
-            // select * from dynamic_organ where material_name like '%query%' or info like '%query%'
-            DynamicParameterExample dynamicParamEx = new DynamicParameterExample();
-            dynamicParamEx.or().andMaterialNameLike("%"+query+"%");
-            dynamicParamEx.or().andInfoLike("%" + query + "%");
-            records = dynamicParamDao.selectByExampleWithBLOBs(dynamicParamEx);
+            // select * from dynamic_organ where username == 'xxx' and (material_name like '%query%' or info like '%query%')
+            dynamicParamEx.or().andMaterialNameLike("%"+query+"%").andUserNameEqualTo(username);
+            dynamicParamEx.or().andInfoLike("%" + query + "%").andUserNameEqualTo(username);
         }
         else{
-            records = dynamicParamDao.selectByExampleWithBLOBs(null);
+            dynamicParamEx.createCriteria().andUserNameEqualTo(username);
         }
-        for(DynamicParameter r: records){
-            System.out.println(r.getParamData());
-        }
+        records = dynamicParamDao.selectByExampleWithBLOBs(dynamicParamEx);
+//        for(DynamicParameter r: records){
+//            System.out.println(r.getParamData());
+//        }
         return records;
     }
 
@@ -90,12 +123,17 @@ public class DynamicParamServiceImpl implements DynamicParamService {
     @Override
     public Boolean editDynamicParamRecord(Integer id, DynamicParameter dynamicParam) {
         // 更新时间戳
-        Date javaDate = new Date();
-        java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
-        dynamicParam.setUpdatedTime(sqlDate);
+        Timestamp timeStamp = TimeUtil.getTimeStamp();
+        dynamicParam.setUpdatedTime(timeStamp);
         DynamicParameterExample ex = new DynamicParameterExample();
         ex.createCriteria().andParamIdEqualTo(id);
         dynamicParamDao.updateByExampleWithBLOBs(dynamicParam, ex);
         return true;
+    }
+
+    private List<User> getUser(String username){
+        UserExample userEx = new UserExample();
+        userEx.createCriteria().andUsernameEqualTo(username);
+        return userDao.selectByExample(userEx);
     }
 }

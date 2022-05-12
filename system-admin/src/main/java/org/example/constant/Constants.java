@@ -1,5 +1,7 @@
 package org.example.constant;
 
+import java.io.File;
+
 /**
  * @Description:
  * @author: cangxiamy
@@ -16,4 +18,12 @@ public class Constants {
     public static final String HEAD_USERNAME = "Username";
     // 分页连续显示的页数
     public static final int NAVIGATE_PAGES = 5;
+
+    public static final String DOT = ".";
+
+    public static final String SEPARATOR = "/";
+
+    public static final String STREAM_CONTENT_TYPE = "application/octet-stream";
+
+    public static final String ENCODING = "utf-8";
 }

@@ -12,4 +12,6 @@ public interface UserService {
     LoginUser login(String userName, String userPassword);
 
     void logout();
+
+    LoginUser getUserInfo();
 }

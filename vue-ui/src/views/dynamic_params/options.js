@@ -1,7 +1,7 @@
-// 数据展示的表头
+// 动态参数的数据展示的表头
 export const options = [
   {
-    label: '材料名称',
+    label: '组织/器官名',
     prop: 'materialName',
     width: 300
   },

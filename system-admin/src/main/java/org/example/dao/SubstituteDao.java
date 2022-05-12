@@ -16,21 +16,15 @@ public interface SubstituteDao {
 
     int insertSelective(Substitute row);
 
-    List<Substitute> selectByExampleWithBLOBs(SubstituteExample example);
-
     List<Substitute> selectByExample(SubstituteExample example);
 
     Substitute selectByPrimaryKey(Integer materialId);
 
     int updateByExampleSelective(@Param("row") Substitute row, @Param("example") SubstituteExample example);
 
-    int updateByExampleWithBLOBs(@Param("row") Substitute row, @Param("example") SubstituteExample example);
-
     int updateByExample(@Param("row") Substitute row, @Param("example") SubstituteExample example);
 
     int updateByPrimaryKeySelective(Substitute row);
-
-    int updateByPrimaryKeyWithBLOBs(Substitute row);
 
     int updateByPrimaryKey(Substitute row);
 }

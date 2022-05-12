@@ -8,7 +8,8 @@ export default {
   state: () => ({
     token: localStorage.getItem('token') || '',
     siderType: true,
-    username: ''
+    username: '',
+    defaultActive: sessionStorage.getItem('path') || '/dynamic_param'
   }),
   mutations: {
     setToken(state, token) {

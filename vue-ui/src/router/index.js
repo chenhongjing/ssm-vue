@@ -8,8 +8,13 @@ const routes = [
     redirect: '/dynamic_param',
     children: [
       {
+        path: 'human',
+        name: '人体介绍',
+        component: () => import('@/views/humans/index.vue')
+      },
+      {
         path: 'organ',
-        name: '人体',
+        name: '人体材料',
         component: () => import('@/views/organs/index.vue')
       },
       {
@@ -23,9 +28,9 @@ const routes = [
         component: () => import('@/views/substitutes/index.vue')
       },
       {
-        path: 'user_management',
-        name: '管理',
-        component: () => import('@/views/users/index.vue')
+        path: 'user',
+        name: '个人管理',
+        component: () => import('@/views/user/index.vue')
       },
       {
         path: 'dynamic_param',
@@ -41,6 +46,11 @@ const routes = [
         path: 'log',
         name: '日志',
         component: () => import('@/views/logs/index.vue')
+      },
+      {
+        path: 'users_management',
+        name: '用户管理',
+        component: () => import('@/views/users_management/index.vue')
       }
     ]
   },

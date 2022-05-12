@@ -43,7 +43,8 @@ import { menuList } from '@/api/menu'
 import { ref } from 'vue'
 import variables from '@/styles/variables.scss'
 
-const iconList = ref(['user', 'watermelon', 'pear', 'tickets', 'pie-chart'])
+// const iconList = ref(['user', 'watermelon', 'pear', 'tickets', 'pie-chart'])
+const iconList = ref(['user', 'watermelon', 'pear', 'pie-chart'])
 const icon = ref('menu')
 
 const defaultActive = ref(sessionStorage.getItem('path') || '/dynamic_param')

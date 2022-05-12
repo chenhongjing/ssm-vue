@@ -3,15 +3,13 @@
 <mapper namespace="org.example.dao.SubstituteDao">
   <resultMap id="BaseResultMap" type="org.example.entity.Substitute">
     <id column="material_id" jdbcType="INTEGER" property="materialId" />
-    <result column="organ_id" jdbcType="INTEGER" property="organId" />
+    <result column="organ_name" jdbcType="VARCHAR" property="organName" />
     <result column="material_name" jdbcType="VARCHAR" property="materialName" />
-    <result column="animal_id" jdbcType="VARCHAR" property="animalId" />
+    <result column="animal_name" jdbcType="VARCHAR" property="animalName" />
     <result column="info" jdbcType="VARCHAR" property="info" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.example.entity.Substitute">
-    <result column="picture" jdbcType="LONGVARBINARY" property="picture" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,27 +70,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    material_id, organ_id, material_name, animal_id, info, user_id, updated_time
+    material_id, organ_name, material_name, animal_name, info, picture_url, user_name, 
+    updated_time
   </sql>
-  <sql id="Blob_Column_List">
-    picture
-  </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="org.example.entity.SubstituteExample" resultMap="ResultMapWithBLOBs">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from substitute
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByExample" parameterType="org.example.entity.SubstituteExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -107,11 +87,9 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from substitute
     where material_id = #{materialId,jdbcType=INTEGER}
   </select>
@@ -126,12 +104,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="org.example.entity.Substitute">
-    insert into substitute (material_id, organ_id, material_name, 
-      animal_id, info, user_id, 
-      updated_time, picture)
-    values (#{materialId,jdbcType=INTEGER}, #{organId,jdbcType=INTEGER}, #{materialName,jdbcType=VARCHAR}, 
-      #{animalId,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
-      #{updatedTime,jdbcType=TIMESTAMP}, #{picture,jdbcType=LONGVARBINARY})
+    insert into substitute (material_id, organ_name, material_name, 
+      animal_name, info, picture_url, 
+      user_name, updated_time)
+    values (#{materialId,jdbcType=INTEGER}, #{organName,jdbcType=VARCHAR}, #{materialName,jdbcType=VARCHAR}, 
+      #{animalName,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, #{pictureUrl,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="org.example.entity.Substitute">
     insert into substitute
@@ -139,52 +117,52 @@
       <if test="materialId != null">
         material_id,
       </if>
-      <if test="organId != null">
-        organ_id,
+      <if test="organName != null">
+        organ_name,
       </if>
       <if test="materialName != null">
         material_name,
       </if>
-      <if test="animalId != null">
-        animal_id,
+      <if test="animalName != null">
+        animal_name,
       </if>
       <if test="info != null">
         info,
       </if>
-      <if test="userId != null">
-        user_id,
+      <if test="pictureUrl != null">
+        picture_url,
+      </if>
+      <if test="userName != null">
+        user_name,
       </if>
       <if test="updatedTime != null">
         updated_time,
-      </if>
-      <if test="picture != null">
-        picture,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="materialId != null">
         #{materialId,jdbcType=INTEGER},
       </if>
-      <if test="organId != null">
-        #{organId,jdbcType=INTEGER},
+      <if test="organName != null">
+        #{organName,jdbcType=VARCHAR},
       </if>
       <if test="materialName != null">
         #{materialName,jdbcType=VARCHAR},
       </if>
-      <if test="animalId != null">
-        #{animalId,jdbcType=VARCHAR},
+      <if test="animalName != null">
+        #{animalName,jdbcType=VARCHAR},
       </if>
       <if test="info != null">
         #{info,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+      <if test="pictureUrl != null">
+        #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
       </if>
       <if test="updatedTime != null">
         #{updatedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="picture != null">
-        #{picture,jdbcType=LONGVARBINARY},
       </if>
     </trim>
   </insert>
@@ -200,42 +178,28 @@
       <if test="row.materialId != null">
         material_id = #{row.materialId,jdbcType=INTEGER},
       </if>
-      <if test="row.organId != null">
-        organ_id = #{row.organId,jdbcType=INTEGER},
+      <if test="row.organName != null">
+        organ_name = #{row.organName,jdbcType=VARCHAR},
       </if>
       <if test="row.materialName != null">
         material_name = #{row.materialName,jdbcType=VARCHAR},
       </if>
-      <if test="row.animalId != null">
-        animal_id = #{row.animalId,jdbcType=VARCHAR},
+      <if test="row.animalName != null">
+        animal_name = #{row.animalName,jdbcType=VARCHAR},
       </if>
       <if test="row.info != null">
         info = #{row.info,jdbcType=VARCHAR},
       </if>
-      <if test="row.userId != null">
-        user_id = #{row.userId,jdbcType=INTEGER},
+      <if test="row.pictureUrl != null">
+        picture_url = #{row.pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="row.userName != null">
+        user_name = #{row.userName,jdbcType=VARCHAR},
       </if>
       <if test="row.updatedTime != null">
         updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="row.picture != null">
-        picture = #{row.picture,jdbcType=LONGVARBINARY},
-      </if>
     </set>
-    <if test="example != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map">
-    update substitute
-    set material_id = #{row.materialId,jdbcType=INTEGER},
-      organ_id = #{row.organId,jdbcType=INTEGER},
-      material_name = #{row.materialName,jdbcType=VARCHAR},
-      animal_id = #{row.animalId,jdbcType=VARCHAR},
-      info = #{row.info,jdbcType=VARCHAR},
-      user_id = #{row.userId,jdbcType=INTEGER},
-      updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
-      picture = #{row.picture,jdbcType=LONGVARBINARY}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -243,11 +207,12 @@
   <update id="updateByExample" parameterType="map">
     update substitute
     set material_id = #{row.materialId,jdbcType=INTEGER},
-      organ_id = #{row.organId,jdbcType=INTEGER},
+      organ_name = #{row.organName,jdbcType=VARCHAR},
       material_name = #{row.materialName,jdbcType=VARCHAR},
-      animal_id = #{row.animalId,jdbcType=VARCHAR},
+      animal_name = #{row.animalName,jdbcType=VARCHAR},
       info = #{row.info,jdbcType=VARCHAR},
-      user_id = #{row.userId,jdbcType=INTEGER},
+      picture_url = #{row.pictureUrl,jdbcType=VARCHAR},
+      user_name = #{row.userName,jdbcType=VARCHAR},
       updated_time = #{row.updatedTime,jdbcType=TIMESTAMP}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -256,48 +221,38 @@
   <update id="updateByPrimaryKeySelective" parameterType="org.example.entity.Substitute">
     update substitute
     <set>
-      <if test="organId != null">
-        organ_id = #{organId,jdbcType=INTEGER},
+      <if test="organName != null">
+        organ_name = #{organName,jdbcType=VARCHAR},
       </if>
       <if test="materialName != null">
         material_name = #{materialName,jdbcType=VARCHAR},
       </if>
-      <if test="animalId != null">
-        animal_id = #{animalId,jdbcType=VARCHAR},
+      <if test="animalName != null">
+        animal_name = #{animalName,jdbcType=VARCHAR},
       </if>
       <if test="info != null">
         info = #{info,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
+      <if test="pictureUrl != null">
+        picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
       </if>
       <if test="updatedTime != null">
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="picture != null">
-        picture = #{picture,jdbcType=LONGVARBINARY},
-      </if>
     </set>
-    where material_id = #{materialId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.example.entity.Substitute">
-    update substitute
-    set organ_id = #{organId,jdbcType=INTEGER},
-      material_name = #{materialName,jdbcType=VARCHAR},
-      animal_id = #{animalId,jdbcType=VARCHAR},
-      info = #{info,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=INTEGER},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
-      picture = #{picture,jdbcType=LONGVARBINARY}
     where material_id = #{materialId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="org.example.entity.Substitute">
     update substitute
-    set organ_id = #{organId,jdbcType=INTEGER},
+    set organ_name = #{organName,jdbcType=VARCHAR},
       material_name = #{materialName,jdbcType=VARCHAR},
-      animal_id = #{animalId,jdbcType=VARCHAR},
+      animal_name = #{animalName,jdbcType=VARCHAR},
       info = #{info,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=INTEGER},
+      picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
     where material_id = #{materialId,jdbcType=INTEGER}
   </update>

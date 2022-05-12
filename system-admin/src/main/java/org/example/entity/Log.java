@@ -11,7 +11,7 @@ public class Log {
 
     private String requestMethod;
 
-    private Integer userId;
+    private String userName;
 
     private String operIp;
 
@@ -53,12 +53,12 @@ public class Log {
         this.requestMethod = requestMethod == null ? null : requestMethod.trim();
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
     }
 
     public String getOperIp() {

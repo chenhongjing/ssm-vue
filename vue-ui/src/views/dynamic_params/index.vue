@@ -1,66 +1,72 @@
 <template>
-  <el-card>
-    <el-row :gutter="20" class="header">
-      <el-col :span="7">
-        <el-input
-          placeholder="请输入关键词"
-          clearable
-          v-model="queryForm.query"
-        ></el-input>
-      </el-col>
-      <el-button
-        type="primary"
-        :icon="Search"
-        @click="initGetDynamicParamRecords"
-        >搜索</el-button
-      >
-      <el-button type="primary" :icon="Plus" @click="handleDialogValue()"
-        >添加数据</el-button
-      >
-    </el-row>
+  <div class="dynamic-param-view">
+    <el-card>
+      <el-row :gutter="20" class="header">
+        <el-col :span="7">
+          <el-input
+            placeholder="请输入关键词"
+            clearable
+            v-model="queryForm.query"
+          ></el-input>
+        </el-col>
+        <el-button
+          type="primary"
+          :icon="Search"
+          @click="initGetDynamicParamRecords"
+          >搜索</el-button
+        >
+        <el-button type="primary" :icon="Plus" @click="handleDialogValue()"
+          >添加数据</el-button
+        >
+      </el-row>
 
-    <el-table :data="tableData" style="width: 100%" @row-dblclick="displayData">
-      <el-table-column
-        v-for="(item, index) in options"
-        :key="index"
-        :prop="item.prop"
-        :label="item.label"
-        :width="item.width"
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        @row-dblclick="displayData"
       >
-        <template v-slot="{ row }" v-if="item.prop === 'action'">
-          <el-button :icon="Edit" @click="handleDialogValue(row)"
-            >编辑</el-button
-          >
-          <el-button type="danger" :icon="Delete" @click="deleteRecord(row)"
-            >删除</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
-    <!--分页器-->
-    <el-pagination
-      v-model:currentPage="queryForm.pageNum"
-      v-model:page-size="queryForm.pageSize"
-      :page-sizes="[1, 2, 5, 10, 20]"
-      :small="small"
-      :disabled="disabled"
-      :background="background"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="totalRecordNum"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
+        <el-table-column
+          v-for="(item, index) in options"
+          :key="index"
+          :prop="item.prop"
+          :label="item.label"
+          :width="item.width"
+        >
+          <template v-slot="{ row }" v-if="item.prop === 'action'">
+            <el-button :icon="Edit" @click="handleDialogValue(row)"
+              >编辑</el-button
+            >
+            <el-button type="danger" :icon="Delete" @click="deleteRecord(row)"
+              >删除</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
+      <!--分页器-->
+      <el-pagination
+        v-model:currentPage="queryForm.pageNum"
+        v-model:page-size="queryForm.pageSize"
+        :page-sizes="[1, 2, 5, 10, 20]"
+        :small="small"
+        :disabled="disabled"
+        :background="background"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalRecordNum"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </el-card>
+
+    <!-- 加上v-if保证每次点开表单后都是全新的，没有之前的残留数据 -->
+    <Dialog
+      v-model:model-value="dialogVisible"
+      :dialogTitle="dialogTitle"
+      v-if="dialogVisible"
+      :dialogTableValue="dialogTableValue"
+      @initDynamicParamRecords="initGetDynamicParamRecords"
     />
-  </el-card>
-
-  <!-- 加上v-if保证每次点开表单后都是全新的，没有之前的残留数据 -->
-  <Dialog
-    v-model:model-value="dialogVisible"
-    :dialogTitle="dialogTitle"
-    v-if="dialogVisible"
-    :dialogTableValue="dialogTableValue"
-    @initDynamicParamRecords="initGetDynamicParamRecords"
-  />
-  <!-- Dialog还有一个事件要绑定： @initUserList="initGetUserList" -->
+    <!-- Dialog还有一个事件要绑定： @initUserList="initGetUserList" -->
+  </div>
 </template>
 
 <script setup>
@@ -107,7 +113,6 @@ const handleDialogValue = (row) => {
 
 const initGetDynamicParamRecords = async () => {
   const res = await getDynamicParamRecords(queryForm.value)
-  // console.log(res)
   totalRecordNum.value = res.total
   tableData.value = res.list
 }

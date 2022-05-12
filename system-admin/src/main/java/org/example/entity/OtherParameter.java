@@ -7,7 +7,7 @@ public class OtherParameter {
 
     private Integer materialId;
 
-    private Integer userId;
+    private String userName;
 
     private String info;
 
@@ -35,12 +35,12 @@ public class OtherParameter {
         this.materialId = materialId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
     }
 
     public String getInfo() {

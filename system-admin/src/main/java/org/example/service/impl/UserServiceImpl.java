@@ -1,5 +1,6 @@
 package org.example.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.constant.Constants;
 import org.example.core.RedisTemplate;
 import org.example.dao.UserDao;
@@ -9,6 +10,7 @@ import org.example.entity.UserExample;
 import org.example.exception.PasswordIncorrectException;
 import org.example.exception.UserNotFoundException;
 import org.example.service.UserService;
+import org.example.utils.RequestUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -27,6 +29,7 @@ import java.util.UUID;
  * @date: 2022.04.30
  */
 @Service("UserService")
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     @Resource
@@ -76,10 +79,29 @@ public class UserServiceImpl implements UserService {
     public void logout() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         // 获取首部信息的token
-        String token = request.getHeader(Constants.HEAD_AUTHORIZATION);
-        String username = request.getHeader(Constants.HEAD_USERNAME);
+        String token = RequestUtil.getToken();
+        String username = RequestUtil.getUsername();
         System.out.println(token);
         // 删除redis中的token user这些数据
         redisTemplate.remove(Constants.TOKEN_PREFIX + username + ":"+ token);
+    }
+
+    @Override
+    public LoginUser getUserInfo() {
+        String username = RequestUtil.getUsername();
+        UserExample userEx = new UserExample();
+        userEx.createCriteria().andUsernameEqualTo(username);
+        List<User> user = userDao.selectByExample(userEx);
+        if(!user.isEmpty()){
+            String token = RequestUtil.getToken();
+            LoginUser loginUser = LoginUser.builder()
+                    .token(token)
+                    .user(user.get(0))
+                    .build();
+            return loginUser;
+        }
+        else{
+            return null;
+        }
     }
 }

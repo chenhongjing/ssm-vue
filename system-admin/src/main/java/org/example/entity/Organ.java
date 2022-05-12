@@ -9,9 +9,13 @@ public class Organ {
 
     private String info;
 
-    private Integer userId;
+    private String pictureUrl;
+
+    private String userName;
 
     private Date updatedTime;
+
+    private String paramData;
 
     public Integer getOrganId() {
         return organId;
@@ -37,12 +41,20 @@ public class Organ {
         this.info = info == null ? null : info.trim();
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getPictureUrl() {
+        return pictureUrl;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl == null ? null : pictureUrl.trim();
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
     }
 
     public Date getUpdatedTime() {
@@ -51,5 +63,13 @@ public class Organ {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getParamData() {
+        return paramData;
+    }
+
+    public void setParamData(String paramData) {
+        this.paramData = paramData == null ? null : paramData.trim();
     }
 }
