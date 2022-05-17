@@ -138,6 +138,7 @@ const initGetSubstituteRecords = async () => {
   console.log(res)
   totalRecordNum.value = res.total
   tableData.value = res.list
+  console.log(tableData.value)
 }
 
 const deleteRecord = (row) => {

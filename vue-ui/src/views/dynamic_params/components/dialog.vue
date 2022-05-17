@@ -3,6 +3,7 @@
     :model-value="dialogVisible"
     :title="dialogTitle"
     width="70%"
+    height="80%"
     @close="handleClose"
   >
     <el-form
@@ -12,15 +13,20 @@
       :rules="rules"
       :disabled="formMode"
     >
-      <!--材料名称：material_id -> material_name -->
+      <!--实验名称 exp_name -->
+      <el-form-item label="实验名称" prop="expName">
+        <el-col :span="halfSpan"> <el-input v-model="form.expName" /></el-col>
+      </el-form-item>
 
-      <el-form-item label="组织/器官名" prop="materialName">
+      <!--材料名称：material_name -->
+
+      <el-form-item label="材料名称" prop="materialName">
         <el-col :span="halfSpan">
           <el-input v-model="form.materialName"
         /></el-col>
       </el-form-item>
-      <!--简介：info-->
-      <el-form-item label="简介">
+      <!--描述：info-->
+      <el-form-item label="描述">
         <el-col :span="fullSpan">
           <el-input v-model="form.info" />
         </el-col>
@@ -38,13 +44,8 @@
           <div v-else v-html="form.paramData"></div>
         </el-col>
       </el-form-item>
-      <!--记录者：recorder-->
-      <el-form-item label="记录者">
-        <el-col :span="halfSpan">
-          <el-input v-model="form.recorder" />
-        </el-col>
-      </el-form-item>
 
+      <!--备注：comment_notes-->
       <el-form-item label="备注">
         <el-col :span="fullSpan">
           <el-input v-model="form.commentNotes" />
@@ -95,6 +96,9 @@ const props = defineProps({
   dialogTableValue: {
     type: Object,
     default: () => {}
+  },
+  category: {
+    type: Number
   }
 })
 
@@ -114,7 +118,7 @@ const handleConfirm = () => {
       if (valid) {
         // 发送请求：添加/修改
         if (props.dialogTitle.includes('添加')) {
-          await addDynamicParamRecord(form.value)
+          await addDynamicParamRecord(props.category, form.value)
         } else {
           await editDynamicParamRecord(form.value)
         }
@@ -140,7 +144,7 @@ const editorConfig = ref({
   // 服务端接口（need to fix！)
   // serverUrl: 'http://localhost:9090/api/',
   // 初始容器高度
-  initialFrameHeight: 300,
+  initialFrameHeight: 250,
   // 初始容器宽度
   initialFrameWidth: '100%',
   enableAutoSave: false
@@ -159,6 +163,13 @@ const form = ref({
 
 // 表单校验
 const rules = ref({
+  expName: [
+    {
+      required: true,
+      message: '实验名称不能为空',
+      trigger: 'blur'
+    }
+  ],
   materialName: [
     {
       required: true,

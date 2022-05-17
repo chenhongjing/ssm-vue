@@ -10,17 +10,19 @@ public class DynamicParameter {
 
     private String materialName;
 
-    private String userName;
-
     private String info;
+
+    private String commentNotes;
+
+    private String expName;
 
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedTime;
 
-    private String recorder;
+    private String username;
 
-    private String commentNotes;
+    private Boolean category;
 
     private String paramData;
 
@@ -40,20 +42,28 @@ public class DynamicParameter {
         this.materialName = materialName == null ? null : materialName.trim();
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
-    }
-
     public String getInfo() {
         return info;
     }
 
     public void setInfo(String info) {
         this.info = info == null ? null : info.trim();
+    }
+
+    public String getCommentNotes() {
+        return commentNotes;
+    }
+
+    public void setCommentNotes(String commentNotes) {
+        this.commentNotes = commentNotes == null ? null : commentNotes.trim();
+    }
+
+    public String getExpName() {
+        return expName;
+    }
+
+    public void setExpName(String expName) {
+        this.expName = expName == null ? null : expName.trim();
     }
 
     public Date getUpdatedTime() {
@@ -64,20 +74,20 @@ public class DynamicParameter {
         this.updatedTime = updatedTime;
     }
 
-    public String getRecorder() {
-        return recorder;
+    public String getUsername() {
+        return username;
     }
 
-    public void setRecorder(String recorder) {
-        this.recorder = recorder == null ? null : recorder.trim();
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
     }
 
-    public String getCommentNotes() {
-        return commentNotes;
+    public Boolean getCategory() {
+        return category;
     }
 
-    public void setCommentNotes(String commentNotes) {
-        this.commentNotes = commentNotes == null ? null : commentNotes.trim();
+    public void setCategory(Boolean category) {
+        this.category = category;
     }
 
     public String getParamData() {

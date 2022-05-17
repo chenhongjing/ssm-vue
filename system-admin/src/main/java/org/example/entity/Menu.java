@@ -9,6 +9,8 @@ public class Menu {
 
     private Integer parentId;
 
+    private Boolean role;
+
     public Integer getMenuId() {
         return menuId;
     }
@@ -39,5 +41,13 @@ public class Menu {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public Boolean getRole() {
+        return role;
+    }
+
+    public void setRole(Boolean role) {
+        this.role = role;
     }
 }

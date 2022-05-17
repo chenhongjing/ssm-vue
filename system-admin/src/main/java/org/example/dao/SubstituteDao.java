@@ -10,7 +10,7 @@ public interface SubstituteDao {
 
     int deleteByExample(SubstituteExample example);
 
-    int deleteByPrimaryKey(Integer materialId);
+    int deleteByPrimaryKey(Integer substituteId);
 
     int insert(Substitute row);
 
@@ -18,7 +18,7 @@ public interface SubstituteDao {
 
     List<Substitute> selectByExample(SubstituteExample example);
 
-    Substitute selectByPrimaryKey(Integer materialId);
+    Substitute selectByPrimaryKey(Integer substituteId);
 
     int updateByExampleSelective(@Param("row") Substitute row, @Param("example") SubstituteExample example);
 

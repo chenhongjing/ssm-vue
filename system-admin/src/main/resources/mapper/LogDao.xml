@@ -80,7 +80,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from log
+    from system_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -91,21 +91,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from log
+    from system_log
     where log_id = #{logId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from log
+    delete from system_log
     where log_id = #{logId,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="org.example.entity.LogExample">
-    delete from log
+    delete from system_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="org.example.entity.Log">
-    insert into log (log_id, api_method, request_url, 
+    insert into system_log (log_id, api_method, request_url, 
       request_method, user_name, oper_ip, 
       oper_status, error_msg, oper_time
       )
@@ -115,7 +115,7 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="org.example.entity.Log">
-    insert into log
+    insert into system_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="logId != null">
         log_id,
@@ -176,13 +176,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="org.example.entity.LogExample" resultType="java.lang.Long">
-    select count(*) from log
+    select count(*) from system_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update log
+    update system_log
     <set>
       <if test="row.logId != null">
         log_id = #{row.logId,jdbcType=INTEGER},
@@ -217,7 +217,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update log
+    update system_log
     set log_id = #{row.logId,jdbcType=INTEGER},
       api_method = #{row.apiMethod,jdbcType=VARCHAR},
       request_url = #{row.requestUrl,jdbcType=VARCHAR},
@@ -232,7 +232,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="org.example.entity.Log">
-    update log
+    update system_log
     <set>
       <if test="apiMethod != null">
         api_method = #{apiMethod,jdbcType=VARCHAR},
@@ -262,7 +262,7 @@
     where log_id = #{logId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="org.example.entity.Log">
-    update log
+    update system_log
     set api_method = #{apiMethod,jdbcType=VARCHAR},
       request_url = #{requestUrl,jdbcType=VARCHAR},
       request_method = #{requestMethod,jdbcType=VARCHAR},

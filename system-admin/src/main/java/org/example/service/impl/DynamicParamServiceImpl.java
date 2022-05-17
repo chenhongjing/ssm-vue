@@ -39,55 +39,32 @@ public class DynamicParamServiceImpl implements DynamicParamService {
     private SubstituteDao substituteDao;
 
     @Override
-    public Boolean addDynamicParamRecord(DynamicParameter dynamicParam) {
+    public Boolean addDynamicParamRecord(Boolean category, DynamicParameter dynamicParam) {
         String username = RequestUtil.getUsername();
-
-//        UserExample userEx = new UserExample();
-//        userEx.createCriteria().andUsernameEqualTo(username);
-//        List<User> user = userDao.selectByExample(userEx);
-
-//        SubstituteExample substituteEx = new SubstituteExample();
-//        substituteEx.createCriteria().andMaterialNameEqualTo(dynamicParam.getMaterialName());
-//        List<Substitute> substitute = substituteDao.selectByExample(substituteEx);
-//
-//        if(substitute.size() == 1){
-//            dynamicParam.setUserName(username);
-//            dynamicParam.setMaterialName(substitute.get(0).getMaterialId());
-//            // 增加时间戳
-//            Date javaDate = new Date();
-//            java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
-//            dynamicParam.setUpdatedTime(sqlDate);
-//            dynamicParamDao.insert(dynamicParam);
-//        }
-//        else{
-//            log.info("error to save dynamic params: cannot find valid material");
-//            return false;
-//        }
-
         // 增加时间戳
         Timestamp timeStamp = TimeUtil.getTimeStamp();
 
-        // 如果动物组织器官在数据库中找不到，自动增加
-        SubstituteExample substituteEx = new SubstituteExample();
-        substituteEx.createCriteria().andMaterialNameEqualTo(dynamicParam.getMaterialName()).andUserNameEqualTo(username);
-        List<Substitute> substitutes = substituteDao.selectByExample(substituteEx);
-        if(substitutes.isEmpty()){
-            Substitute substitute = new Substitute();
-            substitute.setUserName(username);
-            substitute.setMaterialName(dynamicParam.getMaterialName());
-            substitute.setUpdatedTime(timeStamp);
-            substituteDao.insertSelective(substitute);
-        }
+//        // 如果动物组织器官在数据库中找不到，自动增加
+//        SubstituteExample substituteEx = new SubstituteExample();
+//        substituteEx.createCriteria().andMaterialNameEqualTo(dynamicParam.getMaterialName()).andUserNameEqualTo(username);
+//        List<Substitute> substitutes = substituteDao.selectByExample(substituteEx);
+//        if(substitutes.isEmpty()){
+//            Substitute substitute = new Substitute();
+//            substitute.setUserName(username);
+//            substitute.setMaterialName(dynamicParam.getMaterialName());
+//            substitute.setUpdatedTime(timeStamp);
+//            substituteDao.insertSelective(substitute);
+//        }
 
-        dynamicParam.setUserName(username);
-
+        dynamicParam.setUsername(username);
+        dynamicParam.setCategory(category);
         dynamicParam.setUpdatedTime(timeStamp);
         dynamicParamDao.insertSelective(dynamicParam);
         return true;
     }
 
     @Override
-    public List<DynamicParameter> getAllRecords(String query) {
+    public List<DynamicParameter> getAllRecords(Boolean category, String query) {
         String username = RequestUtil.getUsername();
 //        List<User> user = getUser(username);
 //        if(user.isEmpty()){
@@ -102,16 +79,13 @@ public class DynamicParamServiceImpl implements DynamicParamService {
         DynamicParameterExample dynamicParamEx = new DynamicParameterExample();
         if(query!= null && !query.isEmpty()){
             // select * from dynamic_organ where username == 'xxx' and (material_name like '%query%' or info like '%query%')
-            dynamicParamEx.or().andMaterialNameLike("%"+query+"%").andUserNameEqualTo(username);
-            dynamicParamEx.or().andInfoLike("%" + query + "%").andUserNameEqualTo(username);
+            dynamicParamEx.or().andMaterialNameLike("%"+query+"%").andUsernameEqualTo(username).andCategoryEqualTo(category);
+            dynamicParamEx.or().andInfoLike("%" + query + "%").andUsernameEqualTo(username).andCategoryEqualTo(category);
         }
         else{
-            dynamicParamEx.createCriteria().andUserNameEqualTo(username);
+            dynamicParamEx.createCriteria().andUsernameEqualTo(username).andCategoryEqualTo(category);
         }
         records = dynamicParamDao.selectByExampleWithBLOBs(dynamicParamEx);
-//        for(DynamicParameter r: records){
-//            System.out.println(r.getParamData());
-//        }
         return records;
     }
 

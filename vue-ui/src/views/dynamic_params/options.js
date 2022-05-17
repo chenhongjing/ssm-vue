@@ -1,19 +1,24 @@
 // 动态参数的数据展示的表头
 export const options = [
   {
-    label: '组织/器官名',
-    prop: 'materialName',
-    width: 300
+    label: '实验名称',
+    prop: 'expName',
+    width: 200
   },
   {
-    label: '简介',
+    label: '材料名称',
+    prop: 'materialName',
+    width: 200
+  },
+  {
+    label: '描述',
     prop: 'info',
-    width: 300
+    width: 200
   },
   {
     label: '更新时间',
     prop: 'updatedTime',
-    width: 300
+    width: 200
   },
   {
     label: '操作',

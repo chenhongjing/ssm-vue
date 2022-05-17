@@ -1,7 +1,7 @@
 <template>
   <el-card class="login-card">
     <span class="login-title">动态参数在线编辑系统</span>
-    <span class="login-tip">用户登录</span>
+    <span class="login-tip">新用户注册</span>
     <el-form label-width="80px" ref="formRef" :model="form" :rules="rules">
       <el-form-item label="用户名" prop="username">
         <el-input v-model="form.username" placeholder="请输入用户名">
@@ -16,17 +16,32 @@
         >
         </el-input>
       </el-form-item>
+      <el-form-item label="确认密码" prop="confirmPassword">
+        <el-input
+          v-model="form.confirmPassword"
+          type="password"
+          placeholder="请再次输入密码"
+          show-password
+        >
+        </el-input>
+      </el-form-item>
+
+      <el-form-item label="电子邮箱" prop="email">
+        <el-input v-model="form.email" placeholder="请输入电子邮箱"> </el-input>
+      </el-form-item>
+
+      <el-form-item label="电话" prop="phone">
+        <el-input v-model="form.phone" placeholder="请输入电话号码"> </el-input>
+      </el-form-item>
+
       <el-form-item>
-        <el-button class="login-button" type="primary" @click="handleLogin"
-          >登录</el-button
+        <el-button class="login-button" type="primary" @click="handleRegister"
+          >注册</el-button
         >
       </el-form-item>
       <el-form-item>
-        <el-link
-          class="switch-register"
-          :underline="false"
-          @click="switchToRegister"
-          >没有账户？点击注册</el-link
+        <el-link class="switch-login" :underline="false" @click="switchToLogin"
+          >已有账户？点击登录</el-link
         >
       </el-form-item>
     </el-form>
@@ -36,35 +51,48 @@
 <script setup>
 import router from '@/router'
 import { ref, reactive } from 'vue'
-import { useStore } from 'vuex'
-
-const store = useStore()
 
 const form = ref({
   username: 'admin',
-  userPassword: '123456'
+  userPassword: '123456',
+  confirmPassword: '123456',
+  email: '',
+  phone: ''
 })
+
+const equalToPassword = (rule, value, callback) => {
+  if (form.value.userPassword !== value) {
+    callback(new Error('两次输入的密码不一致'))
+  } else {
+    callback()
+  }
+}
 
 const rules = reactive({
   username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
-  userPassword: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
+  userPassword: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
+  confirmPassword: [
+    { required: true, message: '密码不能为空', trigger: 'blur' },
+    { required: true, validator: equalToPassword, trigger: 'blur' }
+  ]
 })
 
 // 登录时统一检验
 const formRef = ref(null)
-const handleLogin = () => {
+const handleRegister = () => {
   formRef.value.validate(async (valid) => {
     if (valid) {
-      store.dispatch('app/login', form.value)
+      console.log('yes')
       return true
     } else {
+      console.log('no')
       return false
     }
   })
 }
 
-const switchToRegister = () => {
-  router.replace('/register')
+const switchToLogin = () => {
+  router.replace('/login')
 }
 </script>
 
@@ -89,7 +117,7 @@ $cursor: #fff;
   right: 0;
   margin: auto;
   width: 480px;
-  height: 400px;
+  height: 550px;
   padding: 50px;
 }
 .login-title {
@@ -126,7 +154,7 @@ $cursor: #fff;
   transform: translate(-50%, -50%);
 }
 
-.switch-register {
+.switch-login {
   text-align: center;
   margin: 0 20%;
 }

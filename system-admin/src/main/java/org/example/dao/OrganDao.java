@@ -16,21 +16,15 @@ public interface OrganDao {
 
     int insertSelective(Organ row);
 
-    List<Organ> selectByExampleWithBLOBs(OrganExample example);
-
     List<Organ> selectByExample(OrganExample example);
 
     Organ selectByPrimaryKey(Integer organId);
 
     int updateByExampleSelective(@Param("row") Organ row, @Param("example") OrganExample example);
 
-    int updateByExampleWithBLOBs(@Param("row") Organ row, @Param("example") OrganExample example);
-
     int updateByExample(@Param("row") Organ row, @Param("example") OrganExample example);
 
     int updateByPrimaryKeySelective(Organ row);
-
-    int updateByPrimaryKeyWithBLOBs(Organ row);
 
     int updateByPrimaryKey(Organ row);
 }

@@ -6,6 +6,7 @@
     <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
     <result column="path" jdbcType="VARCHAR" property="path" />
     <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="role" jdbcType="BIT" property="role" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    menu_id, menu_name, path, parent_id
+    menu_id, menu_name, path, parent_id, role
   </sql>
   <select id="selectByExample" parameterType="org.example.entity.MenuExample" resultMap="BaseResultMap">
     select
@@ -100,9 +101,9 @@
   </delete>
   <insert id="insert" parameterType="org.example.entity.Menu">
     insert into system_menu (menu_id, menu_name, path, 
-      parent_id)
+      parent_id, role)
     values (#{menuId,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
-      #{parentId,jdbcType=INTEGER})
+      #{parentId,jdbcType=INTEGER}, #{role,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="org.example.entity.Menu">
     insert into system_menu
@@ -119,6 +120,9 @@
       <if test="parentId != null">
         parent_id,
       </if>
+      <if test="role != null">
+        role,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="menuId != null">
@@ -132,6 +136,9 @@
       </if>
       <if test="parentId != null">
         #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="role != null">
+        #{role,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -156,6 +163,9 @@
       <if test="row.parentId != null">
         parent_id = #{row.parentId,jdbcType=INTEGER},
       </if>
+      <if test="row.role != null">
+        role = #{row.role,jdbcType=BIT},
+      </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -166,7 +176,8 @@
     set menu_id = #{row.menuId,jdbcType=INTEGER},
       menu_name = #{row.menuName,jdbcType=VARCHAR},
       path = #{row.path,jdbcType=VARCHAR},
-      parent_id = #{row.parentId,jdbcType=INTEGER}
+      parent_id = #{row.parentId,jdbcType=INTEGER},
+      role = #{row.role,jdbcType=BIT}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,6 +194,9 @@
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=INTEGER},
       </if>
+      <if test="role != null">
+        role = #{role,jdbcType=BIT},
+      </if>
     </set>
     where menu_id = #{menuId,jdbcType=INTEGER}
   </update>
@@ -190,7 +204,8 @@
     update system_menu
     set menu_name = #{menuName,jdbcType=VARCHAR},
       path = #{path,jdbcType=VARCHAR},
-      parent_id = #{parentId,jdbcType=INTEGER}
+      parent_id = #{parentId,jdbcType=INTEGER},
+      role = #{role,jdbcType=BIT}
     where menu_id = #{menuId,jdbcType=INTEGER}
   </update>
 </mapper>

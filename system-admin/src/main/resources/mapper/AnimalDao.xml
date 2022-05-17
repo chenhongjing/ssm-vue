@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.example.dao.SubstituteDao">
-  <resultMap id="BaseResultMap" type="org.example.entity.Substitute">
-    <id column="substitute_id" jdbcType="INTEGER" property="substituteId" />
-    <result column="substitute_name" jdbcType="VARCHAR" property="substituteName" />
+<mapper namespace="org.example.dao.AnimalDao">
+  <resultMap id="BaseResultMap" type="org.example.entity.Animal">
+    <id column="animal_id" jdbcType="INTEGER" property="animalId" />
     <result column="animal_name" jdbcType="VARCHAR" property="animalName" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="sci_name" jdbcType="VARCHAR" property="sciName" />
     <result column="info" jdbcType="VARCHAR" property="info" />
     <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,15 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    substitute_id, substitute_name, animal_name, info, picture_url, user_name, updated_time
+    animal_id, animal_name, updated_time, sci_name, info, picture_url, username
   </sql>
-  <select id="selectByExample" parameterType="org.example.entity.SubstituteExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="org.example.entity.AnimalExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from substitute
+    from animal
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,38 +88,41 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from substitute
-    where substitute_id = #{substituteId,jdbcType=INTEGER}
+    from animal
+    where animal_id = #{animalId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from substitute
-    where substitute_id = #{substituteId,jdbcType=INTEGER}
+    delete from animal
+    where animal_id = #{animalId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="org.example.entity.SubstituteExample">
-    delete from substitute
+  <delete id="deleteByExample" parameterType="org.example.entity.AnimalExample">
+    delete from animal
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="org.example.entity.Substitute">
-    insert into substitute (substitute_id, substitute_name, animal_name, 
-      info, picture_url, user_name, 
-      updated_time)
-    values (#{substituteId,jdbcType=INTEGER}, #{substituteName,jdbcType=VARCHAR}, #{animalName,jdbcType=VARCHAR}, 
-      #{info,jdbcType=VARCHAR}, #{pictureUrl,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{updatedTime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="org.example.entity.Animal">
+    insert into animal (animal_id, animal_name, updated_time, 
+      sci_name, info, picture_url, 
+      username)
+    values (#{animalId,jdbcType=INTEGER}, #{animalName,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{sciName,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, #{pictureUrl,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="org.example.entity.Substitute">
-    insert into substitute
+  <insert id="insertSelective" parameterType="org.example.entity.Animal">
+    insert into animal
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="substituteId != null">
-        substitute_id,
-      </if>
-      <if test="substituteName != null">
-        substitute_name,
+      <if test="animalId != null">
+        animal_id,
       </if>
       <if test="animalName != null">
         animal_name,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+      <if test="sciName != null">
+        sci_name,
       </if>
       <if test="info != null">
         info,
@@ -127,22 +130,22 @@
       <if test="pictureUrl != null">
         picture_url,
       </if>
-      <if test="userName != null">
-        user_name,
-      </if>
-      <if test="updatedTime != null">
-        updated_time,
+      <if test="username != null">
+        username,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="substituteId != null">
-        #{substituteId,jdbcType=INTEGER},
-      </if>
-      <if test="substituteName != null">
-        #{substituteName,jdbcType=VARCHAR},
+      <if test="animalId != null">
+        #{animalId,jdbcType=INTEGER},
       </if>
       <if test="animalName != null">
         #{animalName,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sciName != null">
+        #{sciName,jdbcType=VARCHAR},
       </if>
       <if test="info != null">
         #{info,jdbcType=VARCHAR},
@@ -150,31 +153,31 @@
       <if test="pictureUrl != null">
         #{pictureUrl,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="updatedTime != null">
-        #{updatedTime,jdbcType=TIMESTAMP},
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="org.example.entity.SubstituteExample" resultType="java.lang.Long">
-    select count(*) from substitute
+  <select id="countByExample" parameterType="org.example.entity.AnimalExample" resultType="java.lang.Long">
+    select count(*) from animal
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update substitute
+    update animal
     <set>
-      <if test="row.substituteId != null">
-        substitute_id = #{row.substituteId,jdbcType=INTEGER},
-      </if>
-      <if test="row.substituteName != null">
-        substitute_name = #{row.substituteName,jdbcType=VARCHAR},
+      <if test="row.animalId != null">
+        animal_id = #{row.animalId,jdbcType=INTEGER},
       </if>
       <if test="row.animalName != null">
         animal_name = #{row.animalName,jdbcType=VARCHAR},
+      </if>
+      <if test="row.updatedTime != null">
+        updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.sciName != null">
+        sci_name = #{row.sciName,jdbcType=VARCHAR},
       </if>
       <if test="row.info != null">
         info = #{row.info,jdbcType=VARCHAR},
@@ -182,11 +185,8 @@
       <if test="row.pictureUrl != null">
         picture_url = #{row.pictureUrl,jdbcType=VARCHAR},
       </if>
-      <if test="row.userName != null">
-        user_name = #{row.userName,jdbcType=VARCHAR},
-      </if>
-      <if test="row.updatedTime != null">
-        updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
+      <if test="row.username != null">
+        username = #{row.username,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="example != null">
@@ -194,26 +194,29 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update substitute
-    set substitute_id = #{row.substituteId,jdbcType=INTEGER},
-      substitute_name = #{row.substituteName,jdbcType=VARCHAR},
+    update animal
+    set animal_id = #{row.animalId,jdbcType=INTEGER},
       animal_name = #{row.animalName,jdbcType=VARCHAR},
+      updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
+      sci_name = #{row.sciName,jdbcType=VARCHAR},
       info = #{row.info,jdbcType=VARCHAR},
       picture_url = #{row.pictureUrl,jdbcType=VARCHAR},
-      user_name = #{row.userName,jdbcType=VARCHAR},
-      updated_time = #{row.updatedTime,jdbcType=TIMESTAMP}
+      username = #{row.username,jdbcType=VARCHAR}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="org.example.entity.Substitute">
-    update substitute
+  <update id="updateByPrimaryKeySelective" parameterType="org.example.entity.Animal">
+    update animal
     <set>
-      <if test="substituteName != null">
-        substitute_name = #{substituteName,jdbcType=VARCHAR},
-      </if>
       <if test="animalName != null">
         animal_name = #{animalName,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null">
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sciName != null">
+        sci_name = #{sciName,jdbcType=VARCHAR},
       </if>
       <if test="info != null">
         info = #{info,jdbcType=VARCHAR},
@@ -221,23 +224,20 @@
       <if test="pictureUrl != null">
         picture_url = #{pictureUrl,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="updatedTime != null">
-        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
       </if>
     </set>
-    where substitute_id = #{substituteId,jdbcType=INTEGER}
+    where animal_id = #{animalId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="org.example.entity.Substitute">
-    update substitute
-    set substitute_name = #{substituteName,jdbcType=VARCHAR},
-      animal_name = #{animalName,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="org.example.entity.Animal">
+    update animal
+    set animal_name = #{animalName,jdbcType=VARCHAR},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      sci_name = #{sciName,jdbcType=VARCHAR},
       info = #{info,jdbcType=VARCHAR},
       picture_url = #{pictureUrl,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
-    where substitute_id = #{substituteId,jdbcType=INTEGER}
+      username = #{username,jdbcType=VARCHAR}
+    where animal_id = #{animalId,jdbcType=INTEGER}
   </update>
 </mapper>

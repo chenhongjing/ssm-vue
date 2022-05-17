@@ -34,6 +34,9 @@
             <span>{{ userData.loginTime }}</span>
           </el-space>
         </div>
+        <div class="edit-button">
+          <el-button>编辑</el-button>
+        </div>
       </div>
     </el-card>
 
@@ -53,9 +56,10 @@ const avatar = ref('/avatar2.gif')
 // 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
 
 // "https://wpimg.wallstcn.com/e7d23d71-cf19-4b90-a1cc-f56af8c0903d.png"
-const headerImg = ref(
-  'https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_1200/https://yetiacademy.com/wp-content/uploads/2020/06/STEM-Education.jpg'
-)
+
+// 'https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_1200/https://yetiacademy.com/wp-content/uploads/2020/06/STEM-Education.jpg'
+
+const headerImg = ref('user_info_header2.png')
 const spaceSize = ref(30)
 const userData = ref({})
 
@@ -129,5 +133,9 @@ initGetUserInfo()
 .item-name {
   width: 100px;
   font-weight: bold;
+}
+.edit-button {
+  margin: 0 40%;
+  margin-top: 30px;
 }
 </style>

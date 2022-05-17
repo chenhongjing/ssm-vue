@@ -5,7 +5,7 @@ const routes = [
     path: '/',
     name: '主页',
     component: layout,
-    redirect: '/dynamic_param',
+    redirect: '/user',
     children: [
       {
         path: 'human',
@@ -33,8 +33,9 @@ const routes = [
         component: () => import('@/views/user/index.vue')
       },
       {
-        path: 'dynamic_param',
-        name: '动态力学参数',
+        path: 'dynamic_param/:category',
+        name: '动态参数',
+        props: true,
         component: () => import('@/views/dynamic_params/index.vue')
       },
       {
@@ -58,6 +59,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import('@/views/login/index.vue')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/register/index.vue')
   }
 ]
 

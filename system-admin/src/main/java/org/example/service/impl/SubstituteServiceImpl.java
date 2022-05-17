@@ -32,6 +32,7 @@ public class SubstituteServiceImpl implements SubstituteService {
         Timestamp timeStamp = TimeUtil.getTimeStamp();
         substitute.setUpdatedTime(timeStamp);
         substitute.setUserName(username);
+        // 先检查动物存不存在，若不存在，则先插入一个动物数据项再插入动物组织器官数据
         substituteDao.insertSelective(substitute);
         return true;
     }
@@ -42,7 +43,7 @@ public class SubstituteServiceImpl implements SubstituteService {
         List<Substitute> records = null;
         SubstituteExample substituteEx = new SubstituteExample();
         if(query != null && !query.isEmpty()){
-            substituteEx.or().andMaterialNameLike("%"+query+"%").andUserNameEqualTo(username);
+            substituteEx.or().andSubstituteNameLike("%"+query+"%").andUserNameEqualTo(username);
             substituteEx.or().andInfoLike("%" + query + "%").andUserNameEqualTo(username);
         }
         else{
@@ -62,7 +63,7 @@ public class SubstituteServiceImpl implements SubstituteService {
         Timestamp timeStamp = TimeUtil.getTimeStamp();
         substitute.setUpdatedTime(timeStamp);
         SubstituteExample ex = new SubstituteExample();
-        ex.createCriteria().andMaterialIdEqualTo(id);
+        ex.createCriteria().andSubstituteIdEqualTo(id);
         substituteDao.updateByExampleSelective(substitute, ex);
         return true;
     }

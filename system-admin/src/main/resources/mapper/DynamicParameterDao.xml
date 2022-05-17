@@ -4,11 +4,12 @@
   <resultMap id="BaseResultMap" type="org.example.entity.DynamicParameter">
     <id column="param_id" jdbcType="INTEGER" property="paramId" />
     <result column="material_name" jdbcType="VARCHAR" property="materialName" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="info" jdbcType="VARCHAR" property="info" />
-    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
-    <result column="recorder" jdbcType="VARCHAR" property="recorder" />
     <result column="comment_notes" jdbcType="VARCHAR" property="commentNotes" />
+    <result column="exp_name" jdbcType="VARCHAR" property="expName" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="category" jdbcType="BIT" property="category" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.example.entity.DynamicParameter">
     <result column="param_data" jdbcType="LONGVARCHAR" property="paramData" />
@@ -72,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    param_id, material_name, user_name, info, updated_time, recorder, comment_notes
+    param_id, material_name, info, comment_notes, exp_name, updated_time, username, category
   </sql>
   <sql id="Blob_Column_List">
     param_data
@@ -126,12 +127,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="org.example.entity.DynamicParameter">
-    insert into dynamic_param (param_id, material_name, user_name, 
-      info, updated_time, recorder, 
-      comment_notes, param_data)
-    values (#{paramId,jdbcType=INTEGER}, #{materialName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{info,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}, #{recorder,jdbcType=VARCHAR}, 
-      #{commentNotes,jdbcType=VARCHAR}, #{paramData,jdbcType=LONGVARCHAR})
+    insert into dynamic_param (param_id, material_name, info, 
+      comment_notes, exp_name, updated_time, 
+      username, category, param_data
+      )
+    values (#{paramId,jdbcType=INTEGER}, #{materialName,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, 
+      #{commentNotes,jdbcType=VARCHAR}, #{expName,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{username,jdbcType=VARCHAR}, #{category,jdbcType=BIT}, #{paramData,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="org.example.entity.DynamicParameter">
     insert into dynamic_param
@@ -142,20 +145,23 @@
       <if test="materialName != null">
         material_name,
       </if>
-      <if test="userName != null">
-        user_name,
-      </if>
       <if test="info != null">
         info,
+      </if>
+      <if test="commentNotes != null">
+        comment_notes,
+      </if>
+      <if test="expName != null">
+        exp_name,
       </if>
       <if test="updatedTime != null">
         updated_time,
       </if>
-      <if test="recorder != null">
-        recorder,
+      <if test="username != null">
+        username,
       </if>
-      <if test="commentNotes != null">
-        comment_notes,
+      <if test="category != null">
+        category,
       </if>
       <if test="paramData != null">
         param_data,
@@ -168,20 +174,23 @@
       <if test="materialName != null">
         #{materialName,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
-      </if>
       <if test="info != null">
         #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="commentNotes != null">
+        #{commentNotes,jdbcType=VARCHAR},
+      </if>
+      <if test="expName != null">
+        #{expName,jdbcType=VARCHAR},
       </if>
       <if test="updatedTime != null">
         #{updatedTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="recorder != null">
-        #{recorder,jdbcType=VARCHAR},
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
       </if>
-      <if test="commentNotes != null">
-        #{commentNotes,jdbcType=VARCHAR},
+      <if test="category != null">
+        #{category,jdbcType=BIT},
       </if>
       <if test="paramData != null">
         #{paramData,jdbcType=LONGVARCHAR},
@@ -203,20 +212,23 @@
       <if test="row.materialName != null">
         material_name = #{row.materialName,jdbcType=VARCHAR},
       </if>
-      <if test="row.userName != null">
-        user_name = #{row.userName,jdbcType=VARCHAR},
-      </if>
       <if test="row.info != null">
         info = #{row.info,jdbcType=VARCHAR},
+      </if>
+      <if test="row.commentNotes != null">
+        comment_notes = #{row.commentNotes,jdbcType=VARCHAR},
+      </if>
+      <if test="row.expName != null">
+        exp_name = #{row.expName,jdbcType=VARCHAR},
       </if>
       <if test="row.updatedTime != null">
         updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="row.recorder != null">
-        recorder = #{row.recorder,jdbcType=VARCHAR},
+      <if test="row.username != null">
+        username = #{row.username,jdbcType=VARCHAR},
       </if>
-      <if test="row.commentNotes != null">
-        comment_notes = #{row.commentNotes,jdbcType=VARCHAR},
+      <if test="row.category != null">
+        category = #{row.category,jdbcType=BIT},
       </if>
       <if test="row.paramData != null">
         param_data = #{row.paramData,jdbcType=LONGVARCHAR},
@@ -230,11 +242,12 @@
     update dynamic_param
     set param_id = #{row.paramId,jdbcType=INTEGER},
       material_name = #{row.materialName,jdbcType=VARCHAR},
-      user_name = #{row.userName,jdbcType=VARCHAR},
       info = #{row.info,jdbcType=VARCHAR},
-      updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
-      recorder = #{row.recorder,jdbcType=VARCHAR},
       comment_notes = #{row.commentNotes,jdbcType=VARCHAR},
+      exp_name = #{row.expName,jdbcType=VARCHAR},
+      updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
+      username = #{row.username,jdbcType=VARCHAR},
+      category = #{row.category,jdbcType=BIT},
       param_data = #{row.paramData,jdbcType=LONGVARCHAR}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -244,11 +257,12 @@
     update dynamic_param
     set param_id = #{row.paramId,jdbcType=INTEGER},
       material_name = #{row.materialName,jdbcType=VARCHAR},
-      user_name = #{row.userName,jdbcType=VARCHAR},
       info = #{row.info,jdbcType=VARCHAR},
+      comment_notes = #{row.commentNotes,jdbcType=VARCHAR},
+      exp_name = #{row.expName,jdbcType=VARCHAR},
       updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
-      recorder = #{row.recorder,jdbcType=VARCHAR},
-      comment_notes = #{row.commentNotes,jdbcType=VARCHAR}
+      username = #{row.username,jdbcType=VARCHAR},
+      category = #{row.category,jdbcType=BIT}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -259,20 +273,23 @@
       <if test="materialName != null">
         material_name = #{materialName,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
       <if test="info != null">
         info = #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="commentNotes != null">
+        comment_notes = #{commentNotes,jdbcType=VARCHAR},
+      </if>
+      <if test="expName != null">
+        exp_name = #{expName,jdbcType=VARCHAR},
       </if>
       <if test="updatedTime != null">
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="recorder != null">
-        recorder = #{recorder,jdbcType=VARCHAR},
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
       </if>
-      <if test="commentNotes != null">
-        comment_notes = #{commentNotes,jdbcType=VARCHAR},
+      <if test="category != null">
+        category = #{category,jdbcType=BIT},
       </if>
       <if test="paramData != null">
         param_data = #{paramData,jdbcType=LONGVARCHAR},
@@ -283,22 +300,24 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.example.entity.DynamicParameter">
     update dynamic_param
     set material_name = #{materialName,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
       info = #{info,jdbcType=VARCHAR},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
-      recorder = #{recorder,jdbcType=VARCHAR},
       comment_notes = #{commentNotes,jdbcType=VARCHAR},
+      exp_name = #{expName,jdbcType=VARCHAR},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      username = #{username,jdbcType=VARCHAR},
+      category = #{category,jdbcType=BIT},
       param_data = #{paramData,jdbcType=LONGVARCHAR}
     where param_id = #{paramId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="org.example.entity.DynamicParameter">
     update dynamic_param
     set material_name = #{materialName,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
       info = #{info,jdbcType=VARCHAR},
+      comment_notes = #{commentNotes,jdbcType=VARCHAR},
+      exp_name = #{expName,jdbcType=VARCHAR},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},
-      recorder = #{recorder,jdbcType=VARCHAR},
-      comment_notes = #{commentNotes,jdbcType=VARCHAR}
+      username = #{username,jdbcType=VARCHAR},
+      category = #{category,jdbcType=BIT}
     where param_id = #{paramId,jdbcType=INTEGER}
   </update>
 </mapper>

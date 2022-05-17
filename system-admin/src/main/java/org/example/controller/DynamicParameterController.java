@@ -21,13 +21,14 @@ import java.util.List;
 @Slf4j
 public class DynamicParameterController {
 
+    static final Integer ONE = 1;
     @Resource
     private DynamicParamService dynamicParamService;
 
-    @PostMapping("dynamic_param")
-    public ResponseEntity<Boolean> addDynamicParamRecord(@RequestBody DynamicParameter dynamicParam){
+    @PostMapping("dynamic_param/{category}")
+    public ResponseEntity<Boolean> addDynamicParamRecord(@PathVariable Integer category, @RequestBody DynamicParameter dynamicParam){
         if(dynamicParam != null){
-            if(dynamicParamService.addDynamicParamRecord(dynamicParam)){
+            if(dynamicParamService.addDynamicParamRecord(category == ONE ? Boolean.TRUE: Boolean.FALSE, dynamicParam)){
                 log.info("insert dynamic params succeed!");
                 return ResponseEntity.ok().build();
             }
@@ -42,13 +43,13 @@ public class DynamicParameterController {
         }
     }
 
-    @GetMapping("dynamic_param")
-    public ResponseEntity<PageInfo> getDynamicParamRecords(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+    @GetMapping("dynamic_param/{category}")
+    public ResponseEntity<PageInfo> getDynamicParamRecords(@PathVariable Integer category, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                        @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                            @RequestParam(value="query", required = false) String query){
         PageHelper.startPage(pageNum, pageSize);
         // 紧跟的查询会被分页
-        List<DynamicParameter> records = dynamicParamService.getAllRecords(query);
+        List<DynamicParameter> records = dynamicParamService.getAllRecords(category == ONE ? Boolean.TRUE: Boolean.FALSE, query);
         PageInfo page = new PageInfo(records, Constants.NAVIGATE_PAGES);
         log.info("get dynamic param records");
         return ResponseEntity.ok().body(page);

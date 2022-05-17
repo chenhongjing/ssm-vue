@@ -2,7 +2,7 @@ import router from './index'
 import store from '@/store'
 
 // 白名单，没有登录的时候也可以访问的页面
-const whiteList = ['/login']
+const whiteList = ['/login', '/register']
 
 // 路由守卫
 router.beforeEach((to, from, next) => {

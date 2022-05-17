@@ -20,6 +20,8 @@ public class User {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date loginTime;
 
+    private Boolean role;
+
     public Integer getUserId() {
         return userId;
     }
@@ -66,5 +68,13 @@ public class User {
 
     public void setLoginTime(Date loginTime) {
         this.loginTime = loginTime;
+    }
+
+    public Boolean getRole() {
+        return role;
+    }
+
+    public void setRole(Boolean role) {
+        this.role = role;
     }
 }

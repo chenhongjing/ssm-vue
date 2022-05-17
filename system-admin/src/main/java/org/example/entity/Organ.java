@@ -1,5 +1,8 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Organ {
@@ -13,9 +16,9 @@ public class Organ {
 
     private String userName;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedTime;
-
-    private String paramData;
 
     public Integer getOrganId() {
         return organId;
@@ -63,13 +66,5 @@ public class Organ {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
-    }
-
-    public String getParamData() {
-        return paramData;
-    }
-
-    public void setParamData(String paramData) {
-        this.paramData = paramData == null ? null : paramData.trim();
     }
 }

@@ -45,13 +45,16 @@
 <!--        <table tableName="test_dept" domainObjectName="Department"></table>-->
 <!--        -->
         <table tableName="dynamic_param" domainObjectName="DynamicParameter" mapperName="DynamicParameterDao"/>
-        <table tableName="log" domainObjectName="Log" mapperName="LogDao"/>
+        <table tableName="system_log" domainObjectName="Log" mapperName="LogDao"/>
         <table tableName="system_menu" domainObjectName="Menu" mapperName="MenuDao"/>
         <table tableName="organ" domainObjectName="Organ" mapperName="OrganDao"/>
         <table tableName="other_param" domainObjectName="OtherParameter" mapperName="OtherParameterDao"/>
         <table tableName="substitute" domainObjectName="Substitute" mapperName="SubstituteDao"/>
+        <table tableName="animal" domainObjectName="Animal" mapperName="AnimalDao"/>
         <table tableName="system_user" domainObjectName="User" mapperName="UserDao"/>
         <table tableName="system_file" domainObjectName="SystemFile" mapperName="SystemFileDao"/>
+        <table tableName="system_log" domainObjectName="Log" mapperName="LogDao"/>
+
 
     </context>
 </generatorConfiguration>

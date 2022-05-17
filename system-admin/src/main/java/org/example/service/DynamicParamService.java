@@ -10,9 +10,9 @@ import java.util.List;
  * @date: 2022.05.04
  */
 public interface DynamicParamService {
-    Boolean addDynamicParamRecord(DynamicParameter dynamicParam);
+    Boolean addDynamicParamRecord(Boolean category, DynamicParameter dynamicParam);
 
-    List<DynamicParameter> getAllRecords(String query);
+    List<DynamicParameter> getAllRecords(Boolean category, String query);
 
     Boolean deleteDynamicParamRecord(Integer id);
 

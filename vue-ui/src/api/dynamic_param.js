@@ -1,16 +1,16 @@
 import request from './request'
 
-export const addDynamicParamRecord = (data) => {
+export const addDynamicParamRecord = (category, data) => {
   return request({
-    url: '/dynamic_param',
+    url: `/dynamic_param/${category}`,
     method: 'post',
     data: data
   })
 }
 
-export const getDynamicParamRecords = (params) => {
+export const getDynamicParamRecords = (category, params) => {
   return request({
-    url: '/dynamic_param',
+    url: `/dynamic_param/${category}`,
     method: 'get',
     params: params
   })

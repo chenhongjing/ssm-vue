@@ -64,13 +64,14 @@
       v-if="dialogVisible"
       :dialogTableValue="dialogTableValue"
       @initDynamicParamRecords="initGetDynamicParamRecords"
+      :category="props.category"
     />
     <!-- Dialog还有一个事件要绑定： @initUserList="initGetUserList" -->
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, defineProps } from 'vue'
 import { Search, Plus, Edit, Delete } from '@element-plus/icons-vue'
 import { options } from './options'
 import { ElMessageBox, ElMessage } from 'element-plus'
@@ -84,6 +85,12 @@ import { isNull } from '@/utils/filter'
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
 const dialogTableValue = ref({})
+
+const props = defineProps({
+  category: {
+    type: Number
+  }
+})
 
 const queryForm = ref({
   query: '',
@@ -101,10 +108,10 @@ const disabled = ref(false)
 
 const handleDialogValue = (row) => {
   if (isNull(row)) {
-    dialogTitle.value = '添加数据：动态力学参数'
+    dialogTitle.value = '添加数据：动态参数'
     dialogTableValue.value = {}
   } else {
-    dialogTitle.value = '编辑数据：动态力学参数'
+    dialogTitle.value = '编辑数据：动态参数'
     // console.log(row)
     dialogTableValue.value = JSON.parse(JSON.stringify(row))
   }
@@ -112,7 +119,7 @@ const handleDialogValue = (row) => {
 }
 
 const initGetDynamicParamRecords = async () => {
-  const res = await getDynamicParamRecords(queryForm.value)
+  const res = await getDynamicParamRecords(props.category, queryForm.value)
   totalRecordNum.value = res.total
   tableData.value = res.list
 }

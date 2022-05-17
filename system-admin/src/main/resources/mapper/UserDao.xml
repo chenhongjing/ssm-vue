@@ -8,6 +8,7 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="role" jdbcType="BIT" property="role" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    user_id, username, user_password, email, phone, login_time
+    user_id, username, user_password, email, phone, login_time, role
   </sql>
   <select id="selectByExample" parameterType="org.example.entity.UserExample" resultMap="BaseResultMap">
     select
@@ -102,11 +103,11 @@
   </delete>
   <insert id="insert" parameterType="org.example.entity.User">
     insert into system_user (user_id, username, user_password, 
-      email, phone, login_time
-      )
+      email, phone, login_time, 
+      role)
     values (#{userId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{loginTime,jdbcType=TIMESTAMP}
-      )
+      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{loginTime,jdbcType=TIMESTAMP}, 
+      #{role,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="org.example.entity.User">
     insert into system_user
@@ -129,6 +130,9 @@
       <if test="loginTime != null">
         login_time,
       </if>
+      <if test="role != null">
+        role,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -148,6 +152,9 @@
       </if>
       <if test="loginTime != null">
         #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="role != null">
+        #{role,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -178,6 +185,9 @@
       <if test="row.loginTime != null">
         login_time = #{row.loginTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="row.role != null">
+        role = #{row.role,jdbcType=BIT},
+      </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -190,7 +200,8 @@
       user_password = #{row.userPassword,jdbcType=VARCHAR},
       email = #{row.email,jdbcType=VARCHAR},
       phone = #{row.phone,jdbcType=VARCHAR},
-      login_time = #{row.loginTime,jdbcType=TIMESTAMP}
+      login_time = #{row.loginTime,jdbcType=TIMESTAMP},
+      role = #{row.role,jdbcType=BIT}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -213,6 +224,9 @@
       <if test="loginTime != null">
         login_time = #{loginTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="role != null">
+        role = #{role,jdbcType=BIT},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
@@ -222,7 +236,8 @@
       user_password = #{userPassword,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      login_time = #{loginTime,jdbcType=TIMESTAMP}
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      role = #{role,jdbcType=BIT}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 </mapper>
