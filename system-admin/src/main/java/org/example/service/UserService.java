@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.entity.LoginUser;
+import org.example.entity.User;
 
 /**
  * @Description:
@@ -14,4 +15,8 @@ public interface UserService {
     void logout();
 
     LoginUser getUserInfo();
+
+    Boolean register(User user);
+
+    Boolean editUserInfo(User user);
 }

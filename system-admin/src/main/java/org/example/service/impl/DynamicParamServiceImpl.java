@@ -3,6 +3,7 @@ package org.example.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.example.constant.Constants;
 import org.example.dao.DynamicParameterDao;
+import org.example.dao.OrganDao;
 import org.example.dao.SubstituteDao;
 import org.example.dao.UserDao;
 import org.example.entity.*;
@@ -36,6 +37,9 @@ public class DynamicParamServiceImpl implements DynamicParamService {
     private UserDao userDao;
 
     @Resource
+    private OrganDao organDao;
+
+    @Resource
     private SubstituteDao substituteDao;
 
     @Override
@@ -44,17 +48,32 @@ public class DynamicParamServiceImpl implements DynamicParamService {
         // 增加时间戳
         Timestamp timeStamp = TimeUtil.getTimeStamp();
 
-//        // 如果动物组织器官在数据库中找不到，自动增加
-//        SubstituteExample substituteEx = new SubstituteExample();
-//        substituteEx.createCriteria().andMaterialNameEqualTo(dynamicParam.getMaterialName()).andUserNameEqualTo(username);
-//        List<Substitute> substitutes = substituteDao.selectByExample(substituteEx);
-//        if(substitutes.isEmpty()){
-//            Substitute substitute = new Substitute();
-//            substitute.setUserName(username);
-//            substitute.setMaterialName(dynamicParam.getMaterialName());
-//            substitute.setUpdatedTime(timeStamp);
-//            substituteDao.insertSelective(substitute);
-//        }
+        // 先检查人体/动物的组织器官是否已经存在属于该用户的记录，若不存在，则先插入数据
+        String materialName = dynamicParam.getMaterialName();
+        if(materialName != null){
+            if(category == Constants.HUMAN){
+                OrganExample organEx = new OrganExample();
+                organEx.createCriteria().andUserNameEqualTo(username).andOrganNameEqualTo(materialName);
+                if(organDao.countByExample(organEx) == 0){
+                    Organ organ = new Organ();
+                    organ.setOrganName(materialName);
+                    organ.setUserName(username);
+                    organ.setUpdatedTime(timeStamp);
+                    organDao.insertSelective(organ);
+                }
+            }
+            else{
+                SubstituteExample substituteEx = new SubstituteExample();
+                substituteEx.createCriteria().andUserNameEqualTo(username).andSubstituteNameEqualTo(materialName);
+                if(substituteDao.countByExample(substituteEx) == 0){
+                    Substitute substitute = new Substitute();
+                    substitute.setSubstituteName(materialName);
+                    substitute.setUserName(username);
+                    substitute.setUpdatedTime(timeStamp);
+                    substituteDao.insertSelective(substitute);
+                }
+            }
+        }
 
         dynamicParam.setUsername(username);
         dynamicParam.setCategory(category);
@@ -66,14 +85,6 @@ public class DynamicParamServiceImpl implements DynamicParamService {
     @Override
     public List<DynamicParameter> getAllRecords(Boolean category, String query) {
         String username = RequestUtil.getUsername();
-//        List<User> user = getUser(username);
-//        if(user.isEmpty()){
-//            log.info("[error]cannot find user!");
-//            return null;
-//        }
-//        else if(user.size() > 1){
-//            log.info("[error]duplicate user");
-//        }
 
         List<DynamicParameter> records = null;
         DynamicParameterExample dynamicParamEx = new DynamicParameterExample();

@@ -51,7 +51,7 @@ service.interceptors.response.use(
   (error) => {
     console.log('error response:')
     console.log(error.response)
-    error.response && ElMessage.error('Error')
+    // error.response && ElMessage.error('Error')
     return Promise.reject(new Error(error.response.data))
   }
 )

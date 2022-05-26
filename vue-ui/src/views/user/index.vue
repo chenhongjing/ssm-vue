@@ -35,7 +35,7 @@
           </el-space>
         </div>
         <div class="edit-button">
-          <el-button>编辑</el-button>
+          <el-button @click="editUserInfo">编辑</el-button>
         </div>
       </div>
     </el-card>
@@ -44,6 +44,12 @@
       <PieChart />
     </el-card>
   </div>
+  <!--编辑用户信息的弹窗-->
+  <user-dialog
+    v-model:model-value="dialogVisible"
+    :dialogTableValue="dialogTableValue"
+    @initGetUserInfo="initGetUserInfo"
+  />
 </template>
 
 <script setup>
@@ -52,6 +58,7 @@ import PanThumb from '@/components/PanThumb'
 import Mallki from '@/components/TextHoverEffect/Mallki'
 import { ref } from 'vue'
 import PieChart from './components/PieChart.vue'
+import UserDialog from './components/UserDialog'
 const avatar = ref('/avatar2.gif')
 // 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
 
@@ -63,9 +70,18 @@ const headerImg = ref('user_info_header2.png')
 const spaceSize = ref(30)
 const userData = ref({})
 
+const dialogVisible = ref(false)
+const dialogTableValue = ref({})
+
 const initGetUserInfo = async () => {
   const res = await getUserInfo()
   userData.value = res.user
+}
+
+const editUserInfo = () => {
+  console.log('1')
+  dialogTableValue.value = userData.value
+  dialogVisible.value = true
 }
 
 initGetUserInfo()

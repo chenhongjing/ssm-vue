@@ -75,7 +75,7 @@
       />
     </el-card>
     <div>
-      <Dialog
+      <substitute-dialog
         v-model:model-value="dialogVisible"
         :dialogTitle="dialogTitle"
         v-if="dialogVisible"
@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-import Dialog from './components/dialog.vue'
+import SubstituteDialog from './components/SubstituteDialog.vue'
 import { ref } from 'vue'
 import { Search, Plus, Picture } from '@element-plus/icons-vue'
 import { isNull } from '@/utils/filter'
@@ -149,7 +149,7 @@ const deleteRecord = (row) => {
     type: 'warning'
   })
     .then(async () => {
-      await deleteSubstituteRecord(row.materialId)
+      await deleteSubstituteRecord(row.substituteId)
       ElMessage({
         type: 'success',
         message: '删除成功'

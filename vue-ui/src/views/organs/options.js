@@ -1,13 +1,8 @@
-// 动物组织器官的数据展示的表头
+// 人体组织器官的数据展示的表头
 export const options = [
   {
     label: '组织/器官名',
-    prop: 'substituteName',
-    width: 200
-  },
-  {
-    label: '所属动物',
-    prop: 'animalName',
+    prop: 'organName',
     width: 200
   },
   {
@@ -18,7 +13,7 @@ export const options = [
   {
     label: '图片',
     prop: 'picture',
-    width: 150
+    width: 200
   },
   {
     label: '更新时间',

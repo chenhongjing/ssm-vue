@@ -14,26 +14,31 @@
       :disabled="formMode"
     >
       <!--实验名称 exp_name -->
-      <el-form-item label="实验名称" prop="expName">
-        <el-col :span="halfSpan"> <el-input v-model="form.expName" /></el-col>
+      <el-form-item label="实验名称：" prop="expName">
+        <el-col :span="halfSpan">
+          <el-input v-if="!formMode" v-model="form.expName" />
+          <div v-else v-html="form.expName"></div>
+        </el-col>
       </el-form-item>
 
       <!--材料名称：material_name -->
 
-      <el-form-item label="材料名称" prop="materialName">
+      <el-form-item label="材料名称：" prop="materialName">
         <el-col :span="halfSpan">
-          <el-input v-model="form.materialName"
-        /></el-col>
+          <el-input v-if="!formMode" v-model="form.materialName" />
+          <div v-else v-html="form.materialName"></div>
+        </el-col>
       </el-form-item>
       <!--描述：info-->
-      <el-form-item label="描述">
+      <el-form-item label="描述：">
         <el-col :span="fullSpan">
-          <el-input v-model="form.info" />
+          <el-input v-if="!formMode" v-model="form.info" />
+          <div v-else v-html="form.info"></div>
         </el-col>
       </el-form-item>
 
       <!--参数记录（富文本编辑器）：param_data-->
-      <el-form-item label="参数记录">
+      <el-form-item label="参数记录：">
         <el-col :span="fullSpan">
           <vue-ueditor-wrap
             v-if="!formMode"
@@ -41,25 +46,38 @@
             :config="editorConfig"
             editor-id="editor-demo-01"
           ></vue-ueditor-wrap>
+
+          <!-- 自己封装的UEditor-->
+          <!-- <ueditor-wrap
+            v-if="!formMode"
+            v-model="form.paramData"
+            editor-id="editor-demo-01"
+            :config="editorConfig"
+          ></ueditor-wrap> -->
+          <!--自己封装的UEditor -->
+
           <div v-else v-html="form.paramData"></div>
         </el-col>
       </el-form-item>
 
       <!--备注：comment_notes-->
-      <el-form-item label="备注">
+      <el-form-item label="备注：">
         <el-col :span="fullSpan">
-          <el-input v-model="form.commentNotes" />
+          <el-input v-if="!formMode" v-model="form.commentNotes" />
+          <div v-else v-html="form.commentNotes"></div>
         </el-col>
       </el-form-item>
 
       <!--上次更新时间：updated_time (自动更新，不允许用户修改)-->
-      <el-form-item label="更新时间">
+      <el-form-item label="更新时间：">
         <el-col :span="fullSpan">
           <el-input
             disabled
             v-model="form.updatedTime"
             :placeholder="form.updatedTime"
+            v-if="!formMode"
           />
+          <div v-else v-html="form.updatedTime"></div>
         </el-col>
       </el-form-item>
     </el-form>
@@ -79,6 +97,7 @@ import {
   addDynamicParamRecord,
   editDynamicParamRecord
 } from '@/api/dynamic_param'
+// import UeditorWrap from '@/components/UeditorWrap'
 
 const halfSpan = ref(12)
 const fullSpan = ref(23)
@@ -155,7 +174,7 @@ const formRef = ref(null)
 const form = ref({
   materialName: '',
   info: '',
-  paramData: '',
+  paramData: 'asdf',
   recorder: '',
   commentNotes: '',
   updatedTime: ''
@@ -198,6 +217,17 @@ watch(
     }
   },
   { deep: true, immediate: true }
+)
+
+watch(
+  () => form.value.paramData,
+  () => {
+    console.log(form.value.paramData)
+  },
+  {
+    deep: true,
+    immediate: true
+  }
 )
 </script>
 

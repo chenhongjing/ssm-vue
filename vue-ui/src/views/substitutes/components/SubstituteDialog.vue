@@ -8,33 +8,46 @@
     <el-form
       ref="formRef"
       :model="form"
-      label-width="100px"
+      label-width="120px"
       :rules="rules"
       :disabled="formMode"
     >
-      <!--材料名称： material_name -->
+      <!--材料名称： substitute_name -->
 
-      <el-form-item label="组织/器官名" prop="materialName">
+      <el-form-item label="组织/器官名：" prop="substituteName">
         <el-col :span="halfSpan">
-          <el-input v-model="form.materialName"
-        /></el-col>
+          <el-input v-if="!formMode" v-model="form.substituteName" />
+          <div v-else v-html="form.substituteName"></div>
+        </el-col>
       </el-form-item>
+
+      <!--所属动物-->
+      <el-form-item label="所属动物：" prop="animalName">
+        <el-col :span="halfSpan">
+          <el-input v-if="!formMode" v-model="form.animalName" />
+          <div v-else v-html="form.animalName"></div>
+        </el-col>
+      </el-form-item>
+
       <!--简介：info-->
-      <el-form-item label="简介">
+      <el-form-item label="特征描述：">
         <el-col :span="fullSpan">
-          <el-input v-model="form.info" />
+          <el-input v-if="!formMode" v-model="form.info" />
+          <div v-else v-html="form.info"></div>
         </el-col>
       </el-form-item>
 
       <!--图片：picture-->
-      <el-form-item label="图片">
+      <el-form-item label="图片：">
         <el-col :span="halfSpan">
+          <!--编辑模式-->
           <el-upload
             class="avatar-uploader"
             :action="actionUrl"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
+            v-if="!formMode"
           >
             <el-image
               v-if="form.pictureUrl"
@@ -43,17 +56,34 @@
             />
             <el-icon v-else class="avatar-uploader-icon"> <Plus /></el-icon>
           </el-upload>
+          <!--预览模式-->
+          <div v-else>
+            <el-image
+              style="width: 200px; height: 200px"
+              :src="form.pictureUrl"
+              class="avatar"
+              fit="cover"
+            >
+              <template #error>
+                <div class="image-slot">
+                  <el-icon><Picture /></el-icon>
+                </div>
+              </template>
+            </el-image>
+          </div>
         </el-col>
       </el-form-item>
 
       <!--上次更新时间：updated_time (自动更新，不允许用户修改)-->
-      <el-form-item label="更新时间">
+      <el-form-item label="更新时间：">
         <el-col :span="fullSpan">
           <el-input
             disabled
             v-model="form.updatedTime"
             :placeholder="form.updatedTime"
+            v-if="!formMode"
           />
+          <div v-else v-html="form.updatedTime"></div>
         </el-col>
       </el-form-item>
     </el-form>
@@ -119,7 +149,7 @@ const handleConfirm = () => {
         emits('initSubstituteRecords')
         handleClose()
       } else {
-        console.log('error')
+        // console.log('error')
         return false
       }
     })
@@ -129,7 +159,8 @@ const handleConfirm = () => {
 // 表单的数据源
 const formRef = ref(null)
 const form = ref({
-  materialName: '',
+  substituteName: '',
+  animalName: '',
   info: '',
   pictureUrl: String,
   updatedTime: ''
@@ -137,7 +168,7 @@ const form = ref({
 
 // 表单校验
 const rules = ref({
-  materialName: [
+  substituteName: [
     {
       required: true,
       message: '组织/器官名不能为空',
@@ -207,5 +238,18 @@ const beforeAvatarUpload = (file) => {
   width: 178px;
   height: 178px;
   text-align: center;
+}
+.image-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: #f5f7fa;
+  color: #909399;
+  font-size: 30px;
+}
+.image-slot .el-icon {
+  font-size: 30px;
 }
 </style>

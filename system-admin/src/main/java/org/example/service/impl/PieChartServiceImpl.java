@@ -1,5 +1,6 @@
 package org.example.service.impl;
 
+import org.example.constant.Constants;
 import org.example.dao.*;
 import org.example.entity.*;
 import org.example.service.PieChartService;
@@ -18,15 +19,18 @@ import java.util.List;
 @Service("PieChartService")
 public class PieChartServiceImpl implements PieChartService {
 
-    static final Boolean HUMAN = Boolean.FALSE;
+    static final String HUMAN_ORGAN = "人体组织器官";
 
-    static final Boolean ANIMAL = Boolean.TRUE;
+    static final String HUMAN_DYNAMIC_PARAM = "人体组织器官动态参数";
+
+    static final String ANIMAL_INFO = "动物基本信息";
+
+    static final String ANIMAL_ORGAN = "动物组织器官";
+
+    static final String ANIMAL_DYNAMIC_PARAM = "动物组织器官动态参数";
 
     @Resource
     private DynamicParameterDao dynamicParameterDao;
-
-    @Resource
-    private OtherParameterDao otherParameterDao;
 
     @Resource
     private OrganDao organDao;
@@ -48,7 +52,7 @@ public class PieChartServiceImpl implements PieChartService {
         organEx.createCriteria().andUserNameEqualTo(username);
 
         DynamicParameterExample organDyEx = new DynamicParameterExample();
-        organDyEx.createCriteria().andCategoryEqualTo(HUMAN).andUsernameEqualTo(username);
+        organDyEx.createCriteria().andCategoryEqualTo(Constants.HUMAN).andUsernameEqualTo(username);
 
         AnimalExample animalEx = new AnimalExample();
         animalEx.createCriteria().andUsernameEqualTo(username);
@@ -57,13 +61,13 @@ public class PieChartServiceImpl implements PieChartService {
         substituteEx.createCriteria().andUserNameEqualTo(username);
 
         DynamicParameterExample substituteDyEx = new DynamicParameterExample();
-        substituteDyEx.createCriteria().andCategoryEqualTo(ANIMAL).andUsernameEqualTo(username);
+        substituteDyEx.createCriteria().andCategoryEqualTo(Constants.ANIMAL).andUsernameEqualTo(username);
 
-        pieChartData.add(PieChartData.builder().name("人体组织器官").value(organDao.countByExample(organEx)).build());
-        pieChartData.add(PieChartData.builder().name("人体组织器官动态参数").value(dynamicParameterDao.countByExample(organDyEx)).build());
-        pieChartData.add(PieChartData.builder().name("动物基本信息").value(animalDao.countByExample(animalEx)).build());
-        pieChartData.add(PieChartData.builder().name("动物组织器官").value(substituteDao.countByExample(substituteEx)).build());
-        pieChartData.add(PieChartData.builder().name("动物组织器官动态参数").value(dynamicParameterDao.countByExample(substituteDyEx)).build());
+        pieChartData.add(PieChartData.builder().name(HUMAN_ORGAN).value(organDao.countByExample(organEx)).build());
+        pieChartData.add(PieChartData.builder().name(HUMAN_DYNAMIC_PARAM).value(dynamicParameterDao.countByExample(organDyEx)).build());
+        pieChartData.add(PieChartData.builder().name(ANIMAL_INFO).value(animalDao.countByExample(animalEx)).build());
+        pieChartData.add(PieChartData.builder().name(ANIMAL_ORGAN).value(substituteDao.countByExample(substituteEx)).build());
+        pieChartData.add(PieChartData.builder().name(ANIMAL_DYNAMIC_PARAM).value(dynamicParameterDao.countByExample(substituteDyEx)).build());
 
         return pieChartData;
     }

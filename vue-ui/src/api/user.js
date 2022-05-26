@@ -6,3 +6,11 @@ export const getUserInfo = () => {
     method: 'get'
   })
 }
+
+export const editUserInfo = (data) => {
+  return request({
+    url: '/user',
+    method: 'put',
+    data: data
+  })
+}

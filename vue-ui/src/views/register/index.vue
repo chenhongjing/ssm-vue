@@ -51,11 +51,13 @@
 <script setup>
 import router from '@/router'
 import { ref, reactive } from 'vue'
+import { register } from '@/api/register'
+import { ElMessage } from 'element-plus'
 
 const form = ref({
-  username: 'admin',
-  userPassword: '123456',
-  confirmPassword: '123456',
+  username: '',
+  userPassword: '',
+  confirmPassword: '',
   email: '',
   phone: ''
 })
@@ -69,23 +71,65 @@ const equalToPassword = (rule, value, callback) => {
 }
 
 const rules = reactive({
-  username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
-  userPassword: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
+  username: [
+    { required: true, message: '用户名不能为空', trigger: 'blur' },
+    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
+    {
+      pattern: /^[a-zA-Z0-9_-]{1,9}$/,
+      message: '以字母开头，长度在2-10之间，只能包含字符、数字和下划线',
+      trigger: 'blur'
+    }
+  ],
+  userPassword: [
+    { required: true, message: '密码不能为空', trigger: 'blur' },
+    { min: 5, max: 15, message: '长度在 5 到 1·5个字符', trigger: 'blur' }
+  ],
   confirmPassword: [
     { required: true, message: '密码不能为空', trigger: 'blur' },
     { required: true, validator: equalToPassword, trigger: 'blur' }
+  ],
+  email: [
+    {
+      pattern: /^[A-Za-z0-9]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+      message: '邮箱格式不正确',
+      trigger: 'blur'
+    }
+  ],
+  phone: [
+    {
+      pattern: /^1[34578]\d{9}$/,
+      message: '电话格式不正确',
+      trigger: 'blur'
+    }
   ]
 })
 
-// 登录时统一检验
+// 注册时统一检验
 const formRef = ref(null)
 const handleRegister = () => {
   formRef.value.validate(async (valid) => {
     if (valid) {
-      console.log('yes')
-      return true
+      // console.log('yes')
+      return new Promise((resolve, reject) => {
+        register(form.value)
+          .then((res) => {
+            ElMessage({
+              message: '注册成功！',
+              type: 'success'
+            })
+            router.replace('/login')
+            resolve()
+          })
+          .catch((error) => {
+            ElMessage({
+              message: '注册失败！用户名已被注册！',
+              type: 'error'
+            })
+            reject(error)
+          })
+      })
     } else {
-      console.log('no')
+      console.log('error')
       return false
     }
   })

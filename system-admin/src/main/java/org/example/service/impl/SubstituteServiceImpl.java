@@ -1,7 +1,10 @@
 package org.example.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.dao.AnimalDao;
 import org.example.dao.SubstituteDao;
+import org.example.entity.Animal;
+import org.example.entity.AnimalExample;
 import org.example.entity.Substitute;
 import org.example.entity.SubstituteExample;
 import org.example.service.SubstituteService;
@@ -26,13 +29,28 @@ public class SubstituteServiceImpl implements SubstituteService {
     @Resource
     private SubstituteDao substituteDao;
 
+    @Resource
+    private AnimalDao animalDao;
+
     @Override
     public Boolean addSubstituteRecord(Substitute substitute) {
         String username = RequestUtil.getUsername();
         Timestamp timeStamp = TimeUtil.getTimeStamp();
         substitute.setUpdatedTime(timeStamp);
         substitute.setUserName(username);
-        // 先检查动物存不存在，若不存在，则先插入一个动物数据项再插入动物组织器官数据
+        // 先检查属于该用户的动物信息存不存在，若不存在，则先插入一个动物数据项再插入动物组织器官数据
+        String animalName = substitute.getAnimalName();
+        if(animalName != null){
+            AnimalExample animalEx = new AnimalExample();
+            animalEx.createCriteria().andAnimalNameEqualTo(animalName).andUsernameEqualTo(username);
+            if(animalDao.countByExample(animalEx) == 0){ // 不存在动物
+                Animal animal = new Animal();
+                animal.setAnimalName(animalName);
+                animal.setUsername(username);
+                animal.setUpdatedTime(timeStamp);
+                animalDao.insertSelective(animal);
+            }
+        }
         substituteDao.insertSelective(substitute);
         return true;
     }
@@ -45,6 +63,7 @@ public class SubstituteServiceImpl implements SubstituteService {
         if(query != null && !query.isEmpty()){
             substituteEx.or().andSubstituteNameLike("%"+query+"%").andUserNameEqualTo(username);
             substituteEx.or().andInfoLike("%" + query + "%").andUserNameEqualTo(username);
+            substituteEx.or().andAnimalNameLike("%" + query + "%").andUserNameEqualTo(username);
         }
         else{
             substituteEx.createCriteria().andUserNameEqualTo(username);

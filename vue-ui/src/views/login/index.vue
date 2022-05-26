@@ -41,8 +41,8 @@ import { useStore } from 'vuex'
 const store = useStore()
 
 const form = ref({
-  username: 'admin',
-  userPassword: '123456'
+  username: '',
+  userPassword: ''
 })
 
 const rules = reactive({

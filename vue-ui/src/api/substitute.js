@@ -25,7 +25,7 @@ export const deleteSubstituteRecord = (id) => {
 
 export const editSubstituteRecord = (data) => {
   return request({
-    url: `/substitute/${data.materialId}`,
+    url: `/substitute/${data.substituteId}`,
     method: 'put',
     data: data
   })

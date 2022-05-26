@@ -11,6 +11,7 @@ import org.example.exception.PasswordIncorrectException;
 import org.example.exception.UserNotFoundException;
 import org.example.service.UserService;
 import org.example.utils.RequestUtil;
+import org.example.utils.TimeUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -18,6 +19,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -58,12 +60,17 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        User user = userList.get(0);
+        // 更新时间戳
+        Timestamp timestamp = TimeUtil.getTimeStamp();
+        user.setLoginTime(timestamp);
+        userDao.updateByPrimaryKey(user);
         // 生成token
         String token = UUID.randomUUID().toString();
         // 封装一个LoginUser
         LoginUser loginUser = LoginUser.builder()
                 .token(token)
-                .user(userList.get(0))
+                .user(user)
                 .build();
         // 把LoginUser保存到Redis中，key为 token:username:uuid，同时进行唯一登录的处理
         String keyPrefix = Constants.TOKEN_PREFIX + userName + ":";
@@ -103,5 +110,26 @@ public class UserServiceImpl implements UserService {
         else{
             return null;
         }
+    }
+
+    @Override
+    public Boolean register(User user) {
+        String username = user.getUsername();
+        UserExample ex = new UserExample();
+        ex.createCriteria().andUsernameEqualTo(username);
+        Long userCnt = userDao.countByExample(ex);
+        if(userCnt > 0){ // 用户名已经存在
+            return false;
+        }
+        else{ // 用户名不存在，可以注册
+            userDao.insertSelective(user);
+            return true;
+        }
+    }
+
+    @Override
+    public Boolean editUserInfo(User user) {
+        userDao.updateByPrimaryKeySelective(user);
+        return true;
     }
 }

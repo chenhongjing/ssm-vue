@@ -39,11 +39,6 @@ const routes = [
         component: () => import('@/views/dynamic_params/index.vue')
       },
       {
-        path: 'other_param',
-        name: '其他参数',
-        component: () => import('@/views/other_params/index.vue')
-      },
-      {
         path: 'log',
         name: '日志',
         component: () => import('@/views/logs/index.vue')

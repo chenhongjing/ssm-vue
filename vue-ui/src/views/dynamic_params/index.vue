@@ -58,7 +58,7 @@
     </el-card>
 
     <!-- 加上v-if保证每次点开表单后都是全新的，没有之前的残留数据 -->
-    <Dialog
+    <dynamic-param-dialog
       v-model:model-value="dialogVisible"
       :dialogTitle="dialogTitle"
       v-if="dialogVisible"
@@ -71,11 +71,11 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue'
+import { ref, defineProps, watch } from 'vue'
 import { Search, Plus, Edit, Delete } from '@element-plus/icons-vue'
 import { options } from './options'
 import { ElMessageBox, ElMessage } from 'element-plus'
-import Dialog from './components/dialog.vue'
+import DynamicParamDialog from './components/DynamicParamDialog.vue'
 import {
   getDynamicParamRecords,
   deleteDynamicParamRecord
@@ -88,7 +88,7 @@ const dialogTableValue = ref({})
 
 const props = defineProps({
   category: {
-    type: Number
+    type: String
   }
 })
 
@@ -164,6 +164,16 @@ const displayData = (row) => {
   dialogVisible.value = true
 }
 initGetDynamicParamRecords()
+
+watch(
+  () => props.category,
+  () => {
+    initGetDynamicParamRecords()
+  },
+  {
+    immediate: true
+  }
+)
 </script>
 
 <style lang="scss" scoped>

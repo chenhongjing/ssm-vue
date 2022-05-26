@@ -26,4 +26,12 @@ public class Constants {
     public static final String STREAM_CONTENT_TYPE = "application/octet-stream";
 
     public static final String ENCODING = "utf-8";
+    // category 中分类1
+    public static final Boolean HUMAN = Boolean.FALSE;
+    // category 中分类1
+    public static final Boolean ANIMAL = Boolean.TRUE;
+    // role 中分类 1
+    public static final Boolean ADMIN_USER = Boolean.TRUE;
+    // role 中分类2
+    public static final Boolean ORDINARY_USER = Boolean.FALSE;
 }
