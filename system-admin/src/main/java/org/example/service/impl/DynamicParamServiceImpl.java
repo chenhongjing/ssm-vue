@@ -1,6 +1,7 @@
 package org.example.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.annotation.Log;
 import org.example.constant.Constants;
 import org.example.dao.DynamicParameterDao;
 import org.example.dao.OrganDao;
@@ -43,6 +44,7 @@ public class DynamicParamServiceImpl implements DynamicParamService {
     private SubstituteDao substituteDao;
 
     @Override
+    @Log(title = "添加动态参数", logType = "添加")
     public Boolean addDynamicParamRecord(Boolean category, DynamicParameter dynamicParam) {
         String username = RequestUtil.getUsername();
         // 增加时间戳
@@ -101,14 +103,46 @@ public class DynamicParamServiceImpl implements DynamicParamService {
     }
 
     @Override
+    @Log(title = "删除动态参数", logType = "删除")
     public Boolean deleteDynamicParamRecord(Integer id) {
         return dynamicParamDao.deleteByPrimaryKey(id) > 0;
     }
 
     @Override
+    @Log(title = "修改动态参数", logType = "修改")
     public Boolean editDynamicParamRecord(Integer id, DynamicParameter dynamicParam) {
         // 更新时间戳
         Timestamp timeStamp = TimeUtil.getTimeStamp();
+
+        // 先检查人体/动物的组织器官是否已经存在属于该用户的记录，若不存在，则先插入数据
+        String materialName = dynamicParam.getMaterialName();
+        Boolean category = dynamicParam.getCategory();
+        String username = RequestUtil.getUsername();
+        if(materialName != null){
+            if(category == Constants.HUMAN){
+                OrganExample organEx = new OrganExample();
+                organEx.createCriteria().andUserNameEqualTo(username).andOrganNameEqualTo(materialName);
+                if(organDao.countByExample(organEx) == 0){
+                    Organ organ = new Organ();
+                    organ.setOrganName(materialName);
+                    organ.setUserName(username);
+                    organ.setUpdatedTime(timeStamp);
+                    organDao.insertSelective(organ);
+                }
+            }
+            else{
+                SubstituteExample substituteEx = new SubstituteExample();
+                substituteEx.createCriteria().andUserNameEqualTo(username).andSubstituteNameEqualTo(materialName);
+                if(substituteDao.countByExample(substituteEx) == 0){
+                    Substitute substitute = new Substitute();
+                    substitute.setSubstituteName(materialName);
+                    substitute.setUserName(username);
+                    substitute.setUpdatedTime(timeStamp);
+                    substituteDao.insertSelective(substitute);
+                }
+            }
+        }
+
         dynamicParam.setUpdatedTime(timeStamp);
         DynamicParameterExample ex = new DynamicParameterExample();
         ex.createCriteria().andParamIdEqualTo(id);

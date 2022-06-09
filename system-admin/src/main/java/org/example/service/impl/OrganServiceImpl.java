@@ -1,6 +1,7 @@
 package org.example.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.annotation.Log;
 import org.example.dao.OrganDao;
 import org.example.entity.Organ;
 import org.example.entity.OrganExample;
@@ -26,6 +27,7 @@ public class OrganServiceImpl implements OrganService {
     private OrganDao organDao;
 
     @Override
+    @Log(title = "添加人体组织器官信息", logType = "添加")
     public Boolean addOrgan(Organ organ) {
         String username = RequestUtil.getUsername();
         Timestamp timestamp = TimeUtil.getTimeStamp();
@@ -52,11 +54,13 @@ public class OrganServiceImpl implements OrganService {
     }
 
     @Override
+    @Log(title = "删除人体组织器官信息", logType = "删除")
     public Boolean deleteOrgan(Integer id) {
         return organDao.deleteByPrimaryKey(id) > 0;
     }
 
     @Override
+    @Log(title = "修改人体组织器官信息", logType = "修改")
     public Boolean editOrgan(Integer id, Organ organ) {
         Timestamp timestamp = TimeUtil.getTimeStamp();
         organ.setUpdatedTime(timestamp);

@@ -2,6 +2,7 @@ package org.example.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
+import org.example.annotation.Log;
 import org.example.entity.LoginUser;
 import org.example.entity.User;
 import org.example.service.UserService;

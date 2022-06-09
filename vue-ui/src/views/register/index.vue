@@ -82,7 +82,7 @@ const rules = reactive({
   ],
   userPassword: [
     { required: true, message: '密码不能为空', trigger: 'blur' },
-    { min: 5, max: 15, message: '长度在 5 到 1·5个字符', trigger: 'blur' }
+    { min: 5, max: 15, message: '长度在 5 到 15个字符', trigger: 'blur' }
   ],
   confirmPassword: [
     { required: true, message: '密码不能为空', trigger: 'blur' },

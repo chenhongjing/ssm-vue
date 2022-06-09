@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.MD5;
 import lombok.extern.slf4j.Slf4j;
+import org.example.annotation.Log;
 import org.example.constant.Constants;
 import org.example.dao.SystemFileDao;
 import org.example.entity.SystemFile;
@@ -50,6 +51,7 @@ public class SystemFileServiceImpl implements SystemFileService {
     private SystemFileDao systemFileDao;
 
     @Override
+    @Log(title = "上传文件", logType = "其他")
     public String upload(MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         if(originalFilename == null){
@@ -101,6 +103,7 @@ public class SystemFileServiceImpl implements SystemFileService {
     }
 
     @Override
+    @Log(title = "下载文件", logType = "其他")
     public void download(String filename, HttpServletResponse response) throws IOException {
         // 根据文件唯一标识码获取文件
         File file = new File(fileUploadParentPath + filename);

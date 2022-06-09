@@ -53,7 +53,7 @@
         <table tableName="animal" domainObjectName="Animal" mapperName="AnimalDao"/>
         <table tableName="system_user" domainObjectName="User" mapperName="UserDao"/>
         <table tableName="system_file" domainObjectName="SystemFile" mapperName="SystemFileDao"/>
-        <table tableName="system_log" domainObjectName="Log" mapperName="LogDao"/>
+        <table tableName="system_log" domainObjectName="SystemLog" mapperName="SystemLogDao"/>
 
 
     </context>

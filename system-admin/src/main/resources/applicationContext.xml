@@ -3,6 +3,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -10,7 +11,9 @@
        http://www.springframework.org/schema/tx
        https://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/aop
-       https://www.springframework.org/schema/aop/spring-aop.xsd">
+       https://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task-3.2.xsd">
 
     <!--    Spring的配置文件，这里主要配置和业务逻辑有关的-->
 
@@ -18,6 +21,8 @@
         <!--不扫控制器-->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
+
+    <aop:aspectj-autoproxy />
 
     <!-- 数据源、事务控制=========================================================== -->
     <context:property-placeholder location="classpath:jdbc.properties" ignore-unresolvable="true"/>
@@ -92,4 +97,9 @@
         </tx:attributes>
     </tx:advice>
     <!--==========================================================================-->
+
+    <!--开启异步任务===============================================================-->
+    <task:annotation-driven executor="system-logger"/>
+    <task:executor id="system-logger" pool-size="10-20"
+                   keep-alive="120" rejection-policy="ABORT" queue-capacity="200"/>
 </beans>

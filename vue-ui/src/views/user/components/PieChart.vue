@@ -69,7 +69,7 @@ export default {
         },
         series: [
           {
-            name: 'RECOREDS',
+            name: '记录数',
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],

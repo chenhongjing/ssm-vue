@@ -38,7 +38,7 @@ export default {
       this.editor.setContent(this.modelValue)
     })
     /**
-     * 监听文本内容变化，使得U父组件中绑定的数据与之保持一致
+     * 监听文本内容变化，使得父组件中绑定的数据与之保持一致
      */
     this.editor.addListener('contentChange', () => {
       this.$emit('update:modelValue', this.editor.getContent())

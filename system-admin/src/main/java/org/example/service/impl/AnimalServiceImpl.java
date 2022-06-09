@@ -1,6 +1,7 @@
 package org.example.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.annotation.Log;
 import org.example.dao.AnimalDao;
 import org.example.entity.Animal;
 import org.example.entity.AnimalExample;
@@ -26,6 +27,7 @@ public class AnimalServiceImpl implements AnimalService {
     private AnimalDao animalDao;
 
     @Override
+    @Log(title = "添加动物信息", logType = "添加")
     public Boolean addAnimal(Animal animal) {
         String username = RequestUtil.getUsername();
         Timestamp timestamp = TimeUtil.getTimeStamp();
@@ -54,11 +56,13 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
+    @Log(title = "删除动物信息", logType = "删除")
     public Boolean deleteAnimal(Integer id) {
         return animalDao.deleteByPrimaryKey(id) > 0;
     }
 
     @Override
+    @Log(title = "修改动物信息", logType = "修改")
     public Boolean editAnimal(Integer id, Animal animal) {
         Timestamp timestamp = TimeUtil.getTimeStamp();
         animal.setUpdatedTime(timestamp);

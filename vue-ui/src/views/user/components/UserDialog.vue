@@ -97,7 +97,7 @@ const rules = ref({
     }
   ],
   userPassword: [
-    { min: 5, max: 15, message: '长度在 5 到 1·5个字符', trigger: 'blur' }
+    { min: 5, max: 15, message: '长度在 5 到 15个字符', trigger: 'blur' }
   ],
   email: [
     {

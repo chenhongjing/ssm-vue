@@ -1,10 +1,12 @@
 package org.example.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.annotation.Log;
 import org.example.constant.Constants;
 import org.example.core.RedisTemplate;
 import org.example.dao.UserDao;
 import org.example.entity.LoginUser;
+import org.example.entity.Organ;
 import org.example.entity.User;
 import org.example.entity.UserExample;
 import org.example.exception.PasswordIncorrectException;
@@ -128,8 +130,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Log(title = "修改账户信息", logType = "其他")
     public Boolean editUserInfo(User user) {
         userDao.updateByPrimaryKeySelective(user);
         return true;
     }
+
+    @Override
+    public List<User> getAllUsers(String query) {
+        List<User> records = null;
+        UserExample userEx = new UserExample();
+        if(query != null && !query.isEmpty()){
+            userEx.or().andUsernameLike("%" + query + "%");
+            userEx.or().andEmailLike("%" + query + "%");
+            userEx.or().andPhoneLike("%" + query + "%");
+        }
+        else{
+            userEx.createCriteria();
+        }
+        records = userDao.selectByExample(userEx);
+        return records;
+    }
+
+    @Override
+    @Log(title = "修改账户信息", logType = "其他")
+    public Boolean editUser(Integer id, User user) {
+        return editUserInfo(user);
+    }
+
+    @Override
+    @Log(title = "删除账户信息", logType = "删除")
+    public Boolean deleteUser(Integer id) {
+        return userDao.deleteByPrimaryKey(id) > 0;
+    }
+
 }
